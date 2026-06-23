@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPSC Do-or-Die Masterplan — Phase 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f; --card: #12121a; --card2: #1a1a2e; --accent: #e74c3c;
+  --accent2: #ff6b6b; --gold: #f39c12; --green: #2ecc71; --blue: #3498db;
+  --text: #e0e0e0; --muted: #888; --border: #2a2a3e;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+
+/* Header */
+.hero { background: linear-gradient(135deg, #1a0000 0%, #0a0a0f 50%, #000a1a 100%); padding:60px 20px; text-align:center; border-bottom:2px solid var(--accent); }
+.hero h1 { font-size:2.5em; font-weight:900; text-transform:uppercase; letter-spacing:3px; background:linear-gradient(90deg,#e74c3c,#f39c12); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.hero p { color:var(--muted); font-size:1.1em; margin-top:10px; }
+
+/* Stats Bar */
+.stats { display:flex; justify-content:center; gap:30px; padding:20px; background:var(--card); border-bottom:1px solid var(--border); flex-wrap:wrap; }
+.stat { text-align:center; }
+.stat .num { font-size:2em; font-weight:900; color:var(--accent2); }
+.stat .label { font-size:0.8em; color:var(--muted); text-transform:uppercase; }
+
+/* Navigation */
+.nav { display:flex; gap:10px; padding:20px; overflow-x:auto; background:var(--card); border-bottom:1px solid var(--border); flex-wrap:wrap; justify-content:center; }
+.nav button { padding:10px 20px; border:1px solid var(--border); background:var(--card2); color:var(--text); border-radius:8px; cursor:pointer; font-size:0.9em; transition:all 0.3s; white-space:nowrap; }
+.nav button:hover, .nav button.active { background:var(--accent); border-color:var(--accent); color:#fff; transform:scale(1.05); }
+
+/* PDF Button */
+.pdf-btn { display:block; margin:20px auto; padding:15px 40px; background:linear-gradient(135deg,var(--accent),#c0392b); color:#fff; border:none; border-radius:12px; font-size:1.1em; font-weight:700; cursor:pointer; text-transform:uppercase; letter-spacing:2px; transition:all 0.3s; }
+.pdf-btn:hover { transform:scale(1.05); box-shadow:0 0 30px rgba(231,76,60,0.4); }
+
+/* Container */
+.container { max-width:1200px; margin:0 auto; padding:20px; }
+
+/* Week Card */
+.week { background:var(--card); border:1px solid var(--border); border-radius:16px; margin:20px 0; overflow:hidden; }
+.week-header { padding:20px; background:linear-gradient(135deg,var(--card2),#16213e); cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+.week-header h2 { font-size:1.3em; color:var(--accent2); }
+.week-header .arrow { font-size:1.5em; transition:transform 0.3s; }
+.week-header.open .arrow { transform:rotate(180deg); }
+.week-body { display:none; padding:0 20px 20px; }
+.week-body.show { display:block; }
+
+/* Day Card */
+.day { background:var(--card2); border:1px solid var(--border); border-radius:12px; margin:15px 0; overflow:hidden; }
+.day-header { padding:15px 20px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+.day-header h3 { font-size:1.1em; }
+.day-header .badge { padding:4px 12px; border-radius:20px; font-size:0.75em; font-weight:700; }
+.day-header .badge.polity { background:#2980b9; }
+.day-header .badge.history { background:#8e44ad; }
+.day-header .badge.economy { background:#27ae60; }
+.day-header .badge.geography { background:#d35400; }
+.day-header .badge.revision { background:var(--gold); color:#000; }
+.day-content { display:none; padding:0 20px 20px; }
+.day-content.show { display:block; }
+
+/* Subject Section */
+.subject-section { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:10px; padding:15px; margin:10px 0; }
+.subject-section h4 { color:var(--gold); margin-bottom:10px; font-size:1em; text-transform:uppercase; letter-spacing:1px; }
+.chapters { list-style:none; }
+.chapters li { padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; align-items:center; gap:10px; }
+.chapters li:last-child { border:none; }
+.chapters li::before { content:'📖'; }
+
+/* MCQ Section */
+.mcq-section { background:rgba(52,152,219,0.05); border:1px solid rgba(52,152,219,0.2); border-radius:10px; padding:20px; margin:15px 0; }
+.mcq-section h4 { color:var(--blue); margin-bottom:15px; }
+.question { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:15px; margin:10px 0; }
+.question p.q-text { font-weight:600; margin-bottom:12px; }
+.question .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:0.7em; font-weight:700; margin-bottom:8px; }
+.question .tag.pyq { background:#8e44ad; color:#fff; }
+.question .tag.mcq { background:var(--blue); color:#fff; }
+.options label { display:block; padding:10px 15px; margin:5px 0; border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:all 0.2s; }
+.options label:hover { border-color:var(--blue); background:rgba(52,152,219,0.1); }
+.options input[type="radio"] { margin-right:10px; }
+.check-btn { margin-top:10px; padding:8px 20px; background:var(--blue); color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:600; }
+.explanation { display:none; margin-top:10px; padding:12px; border-radius:8px; font-size:0.9em; }
+.explanation.correct { background:rgba(46,204,113,0.1); border:1px solid var(--green); color:var(--green); }
+.explanation.wrong { background:rgba(231,76,60,0.1); border:1px solid var(--accent); color:var(--accent2); }
+
+/* Mains Section */
+.mains-section { background:rgba(243,156,18,0.05); border:1px solid rgba(243,156,18,0.2); border-radius:10px; padding:20px; margin:15px 0; }
+.mains-section h4 { color:var(--gold); margin-bottom:10px; }
+.mains-q { font-weight:700; font-size:1.05em; margin-bottom:10px; }
+.approach { background:var(--card); border-left:4px solid var(--gold); padding:15px; border-radius:0 8px 8px 0; margin:10px 0; }
+.approach h5 { color:var(--gold); margin-bottom:8px; }
+.approach ul { margin-left:20px; }
+.approach li { margin:5px 0; color:var(--muted); }
+.model-answer { background:var(--card); border-left:4px solid var(--green); padding:15px; border-radius:0 8px 8px 0; margin:10px 0; }
+.model-answer h5 { color:var(--green); margin-bottom:8px; }
+
+/* Score Tracker */
+.score-bar { display:flex; justify-content:space-between; align-items:center; background:var(--card); padding:15px 20px; border-radius:10px; margin:15px 0; border:1px solid var(--border); }
+.score-bar .score { font-size:1.5em; font-weight:900; color:var(--green); }
+
+/* Sunday Card */
+.sunday { border-color:var(--gold) !important; }
+.sunday .day-header { background:linear-gradient(135deg, rgba(243,156,18,0.1), rgba(231,76,60,0.1)); }
+
+/* Progress */
+.progress-wrap { margin:10px 0; }
+.progress-bar { height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--gold)); border-radius:4px; transition:width 0.5s; }
+
+@media(max-width:600px) {
+  .hero h1 { font-size:1.5em; }
+  .stats { gap:15px; }
+  .stat .num { font-size:1.5em; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔥 Do or Die Masterplan</h1>
+  <p>Phase 1: Foundation — June 22 to October 25, 2026 (18 Weeks)</p>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="num" id="totalScore">0</div><div class="label">Total Score</div></div>
+  <div class="stat"><div class="num" id="totalAttempted">0</div><div class="label">Questions Done</div></div>
+  <div class="stat"><div class="num" id="totalCorrect">0</div><div class="label">Correct</div></div>
+  <div class="stat"><div class="num" id="accuracy">0%</div><div class="label">Accuracy</div></div>
+</div>
+
+<div class="nav" id="weekNav"></div>
+
+<button class="pdf-btn" onclick="window.print()">📄 Export as PDF</button>
+
+<div class="container" id="content"></div>
+
+<script>
+// ============ DATA ============
+const WEEKS = [
+  // WEEK 1
+  {
+    week: 1, title: "Week 1 (Jun 22 - Jun 28)", block: "Polity & History",
+    days: [
+      { day:"Day 1 (Mon)", subjects:[
+        {name:"Polity", badge:"polity", chapters:["Historical Background of the Constitution","Key Developments: Regulating Act 1773, Pitt's India Act 1784, Charter Acts"]},
+        {name:"Modern History", badge:"history", chapters:["Advent of Europeans: Portuguese, Dutch, French, English","Trading companies and their rivalries"]}
+      ],
+      mcqs:[
+        {type:"pyq",q:"Which Act created the Supreme Court at Calcutta? (UPSC 2019)",opts:["Regulating Act 1773","Pitt's India Act 1784","Charter Act 1813","Government of India Act 1858"],ans:0,exp:"The Regulating Act of 1773 established the Supreme Court at Calcutta (now Kolkata) as the first court of judicature."},
+        {type:"mcq",q:"The Charter Act of 1833 made the Governor-General of Bengal as the:",opts:["Governor-General of India","Viceroy of India","Secretary of State","Commander-in-Chief"],ans:0,exp:"The Charter Act of 1833 elevated the Governor-General of Bengal to Governor-General of India, making Lord William Bentinck the first to hold this title."},
+        {type:"pyq",q:"Under which Act was the Board of Control established?",opts:["Regulating Act 1773","Pitt's India Act 1784","Charter Act 1853","Indian Councils Act 1861"],ans:1,exp:"Pitt's India Act 1784 created the Board of Control to supervise the affairs of the East India Company in India."},
+        {type:"mcq",q:"Who was the first Portuguese Viceroy in India?",opts:["Vasco da Gama","Francisco de Almeida","Alfonso de Albuquerque","Bartholomew Diaz"],ans:1,exp:"Francisco de Almeida was the first Portuguese Viceroy in India (1505-1509), who followed the policy of Blue Water (Cartaze system)."}
+      ],
+      mains:{q:"Trace the evolution of the East India Company from a trading body to a political power in India. (250 words, 15 marks)",approach:["Start with establishment of EIC in 1600","Discuss Battle of Plassey (1757) as turning point","Cover Regulating Act 1773 and Pitt's India Act 1784","Mention subsidiary alliance system under Wellesley","Conclude with Charter Act 1833 ending commercial activities"],model:"The East India Company, established by Royal Charter in 1600, underwent a remarkable transformation from a commercial enterprise to the de facto sovereign of India. Initially focused on spice trade, the Company gradually acquired political power through strategic alliances and military conquests.\n\nThe Battle of Plassey (1757) marked the decisive turning point, where Robert Clive's victory over Nawab Siraj-ud-Daulah gave the Company control over Bengal's revenues. The subsequent Battle of Buxar (1764) consolidated this power, leading to the Diwani rights.\n\nThe British Parliament intervened through the Regulating Act (1773), establishing governmental oversight, and Pitt's India Act (1784), which created the Board of Control for political affairs. Lord Wellesley's Subsidiary Alliance System further expanded territorial control without direct warfare.\n\nThe Charter Act of 1833 finally ended the Company's commercial activities, transforming it into a purely administrative body. This evolution from trader to ruler was characterized by exploitation of India's internal divisions, superior military technology, and strategic diplomatic maneuvering."}
+      },
+      { day:"Day 2 (Tue)", subjects:[
+        {name:"Polity", badge:"polity", chapters:["Making of the Constitution: Constituent Assembly","Composition, Working Committees, Drafting Committee"]},
+        {name:"Modern History", badge:"history", chapters:["India on the Eve of British Conquest","Decline of Mughal Empire, Rise of Regional Powers"]}
+      ],
+      mcqs:[
+        {type:"pyq",q:"Who proposed the idea of a Constituent Assembly for India for the first time? (UPSC 2015)",opts:["Swaraj Party in 1928","Indian National Congress in 1936","Muslim League in 1940","M.N. Roy in 1934"],ans:3,exp:"M.N. Roy, a pioneer of the Communist movement in India, first proposed the idea of a Constituent Assembly in 1934."},
+        {type:"mcq",q:"The Constituent Assembly was formed on the recommendation of:",opts:["Cripps Mission","August Offer","Cabinet Mission Plan","Mountbatten Plan"],ans:2,exp:"The Cabinet Mission Plan of 1946 recommended the formation of a Constituent Assembly to frame the Constitution of India."},
+        {type:"pyq",q:"Who was the Chairman of the Drafting Committee of the Indian Constitution?",opts:["Dr. Rajendra Prasad","Jawaharlal Nehru","Dr. B.R. Ambedkar","Sardar Vallabhbhai Patel"],ans:2,exp:"Dr. B.R. Ambedkar was the Chairman of the Drafting Committee, which had 7 members in total."},
+        {type:"mcq",q:"Which Mughal emperor's death in 1707 is considered the beginning of Mughal decline?",opts:["Shah Jahan","Aurangzeb","Bahadur Shah I","Muhammad Shah"],ans:1,exp:"Aurangzeb's death in 1707 is widely considered the beginning of the rapid decline of the Mughal Empire due to wars of succession and weakened central authority."}
+      ],
+      mains:{q:"Discuss the role of Dr. B.R. Ambedkar in the making of the Indian Constitution. How does his vision remain relevant today? (250 words, 15 marks)",approach:["Introduce Ambedkar as Chairman of Drafting Committee","Highlight his emphasis on social justice, equality, fundamental rights","Discuss specific contributions: Article 14, 15, 17, 21","Connect to contemporary issues: caste discrimination, reservation debates","Conclude with lasting legacy"],model:"Dr. B.R. Ambedkar's contribution to the Indian Constitution transcends his role as Chairman of the Drafting Committee. His lived experience of caste discrimination profoundly shaped the constitutional framework's emphasis on equality, liberty, and social justice.\n\nAmbedkar championed fundamental rights as justiciable guarantees, particularly Articles 14 (equality before law), 15 (prohibition of discrimination), 17 (abolition of untouchability), and 21 (right to life). He advocated for reservations as a mechanism for substantive equality, recognizing that formal equality alone cannot address centuries of social oppression.\n\nHis vision of 'constitutional morality' — governing through democratic institutions rather than personality cults — remains critically relevant today. The ongoing debates around reservation policies, caste-based discrimination, and access to justice directly reflect Ambedkar's concerns.\n\nFurthermore, his advocacy for women's rights through the Hindu Code Bill, though initially defeated, eventually led to landmark legislation. His emphasis on education as a tool for emancipation continues to guide policy frameworks.\n\nIn conclusion, Ambedkar's constitutional vision of a just, equitable, and democratic India remains the moral compass of Indian governance, making his contributions both foundational and enduringly relevant."}
+      },
+      { day:"Day 3 (Wed)", subjects:[
+        {name:"Polity", badge:"polity", chapters:["Salient Features of the Constitution","Federal system with unitary bias, Written & Lengthy, Rigid & Flexible"]},
+        {name:"Modern History", badge:"history", chapters:["Expansion & Consolidation of British Power","Carnatic Wars, Bengal Conquest, Mysore Wars"]}
+      ],
+      mcqs:[
+        {type:"pyq",q:"Which of the following is NOT a feature of Indian Constitution?",opts:["Federal with strong centre","Presidential form of government","Independent judiciary","Single citizenship"],ans:1,exp:"India follows a Parliamentary form of government, not Presidential. The President is the nominal head while the Prime Minister is the real executive."},
+        {type:"mcq",q:"The Indian Constitution is described as 'quasi-federal' by:",opts:["Dr. B.R. Ambedkar","K.C. Wheare","Granville Austin","Ivor Jennings"],ans:1,exp:"K.C. Wheare described the Indian Constitution as 'quasi-federal' — federal in form but unitary in spirit."},
+        {type:"pyq",q:"The Third Battle of Panipat (1761) was fought between:",opts:["Marathas and Ahmad Shah Abdali","British and Marathas","Sikhs and Afghans","Mughals and Marathas"],ans:0,exp:"The Third Battle of Panipat was fought between the Marathas and Ahmad Shah Abdali (Durrani Empire) in 1761. The Maratha defeat ended their imperial ambitions."},
+        {type:"mcq",q:"Tipu Sultan was the ruler of:",opts:["Hyderabad","Mysore","Awadh","Bengal"],ans:1,exp:"Tipu Sultan, also known as the 'Tiger of Mysore', was the ruler of the Kingdom of Mysore. He was killed in the Fourth Anglo-Mysore War in 1799."}
+      ],
+      mains:{q:"'The Indian Constitution strikes a balance between rigidity and flexibility.' Examine this statement with suitable examples. (250 words, 15 marks)",approach:["Define rigid and flexible constitutions","Explain Article 368 — the amendment procedure","Give examples of simple majority amendments (e.g., state names)","Give examples of special majority (fundamental rights)","Give examples requiring state ratification (federal provisions)","Conclude: this balance enables adaptability while protecting core values"],model:"The Indian Constitution uniquely combines elements of both rigidity and flexibility, enabling it to adapt to changing times while safeguarding fundamental principles.\n\nArticle 368 prescribes three categories of amendments: (1) Simple majority of Parliament — for matters like creation of new states (Art. 2-4), citizenship provisions, and abolition of Legislative Councils; (2) Special majority (2/3 of members present and voting + majority of total membership) — for fundamental rights, DPSPs, and most constitutional provisions; (3) Special majority plus ratification by half the state legislatures — for federal provisions like election of President, distribution of legislative powers, and representation of states.\n\nThis graduated approach ensures that routine modifications can be made efficiently (flexibility), while core constitutional values remain protected from hasty alterations (rigidity). The Constitution has been amended over 100 times, demonstrating its adaptive nature, yet the Basic Structure doctrine (Kesavananda Bharati, 1973) ensures that Parliament cannot alter its fundamental framework.\n\nThus, the Indian Constitution is neither purely rigid like the American Constitution nor purely flexible like the British Constitution, but strikes an optimal balance that has enabled democratic governance for over seven decades."}
+      },
+      { day:"Day 4 (Thu)", subjects:[
+        {name:"Polity", badge:"polity", chapters:["Preamble of the Constitution","Sovereignty, Socialist, Secular, Democratic, Republic, Justice, Liberty, Equality, Fraternity"]},
+        {name:"Modern History", badge:"history", chapters:["Causes of British Success in India","Superior military, Diplomacy, Indian disunity, Naval power"]}
+      ],
+      mcqs:[
+        {type:"pyq",q:"'Socialist' and 'Secular' were added to the Preamble by which Amendment? (UPSC 2020)",opts:["42nd Amendment","44th Amendment","52nd Amendment","86th Amendment"],ans:0,exp:"The 42nd Amendment Act of 1976 (during Emergency) added 'Socialist', 'Secular', and 'Integrity' to the Preamble."},
+        {type:"mcq",q:"In which case did the Supreme Court hold that the Preamble is a part of the Constitution?",opts:["Berubari Union Case","Kesavananda Bharati Case","Golaknath Case","Minerva Mills Case"],ans:1,exp:"In the Kesavananda Bharati Case (1973), the Supreme Court held that the Preamble is a part of the Constitution and can be amended under Article 368, subject to the Basic Structure limitation."},
+        {type:"pyq",q:"The Subsidiary Alliance system was introduced by:",opts:["Lord Clive","Lord Wellesley","Lord Dalhousie","Lord Cornwallis"],ans:1,exp:"Lord Wellesley introduced the Subsidiary Alliance System in 1798 to expand British control. Indian rulers had to maintain British troops at their expense and could not make alliances with other powers."},
+        {type:"mcq",q:"The Doctrine of Lapse was introduced by:",opts:["Lord Wellesley","Lord Dalhousie","Lord Canning","Lord Hastings"],ans:1,exp:"Lord Dalhousie introduced the Doctrine of Lapse, under which Indian states without a natural heir were annexed by the British. States like Satara, Jhansi, and Nagpur were annexed under this policy."}
+      ],
+      mains:{q:"Critically examine the significance of the word 'Secular' in the Indian Preamble. How does Indian secularism differ from Western secularism? (250 words, 15 marks)",approach:["Define secularism in Indian context (Sarva Dharma Sambhava)","Contrast with Western model (wall of separation)","Cite Articles 25-28 for religious freedom","Discuss positive secularism — state can intervene for reform","Give examples: temple entry laws, Triple Talaq judgment","Conclude with relevance in pluralistic society"],model:"Indian secularism, enshrined through the 42nd Amendment (1976), differs fundamentally from Western secularism. While Western secularism advocates a strict 'wall of separation' between church and state (as in the US First Amendment), Indian secularism follows the principle of 'Sarva Dharma Sambhava' — equal respect for all religions.\n\nThe Constitution guarantees religious freedom (Articles 25-28) while simultaneously empowering the state to intervene in religious practices for social reform. This 'positive secularism' or 'principled distance' allows the state to regulate religious institutions, abolish practices like untouchability, and reform personal laws — as demonstrated by the landmark Triple Talaq judgment (2017).\n\nHowever, Indian secularism faces criticism: state management of temples while mosques and churches enjoy greater autonomy raises questions of equal treatment. The uniform civil code debate (Article 44) remains unresolved, highlighting the tension between religious freedom and equality.\n\nDespite these challenges, Indian secularism remains vital for maintaining communal harmony in a nation of extraordinary religious diversity. It provides a framework that neither privileges any religion nor is hostile to religion, making it uniquely suited to India's pluralistic character."}
+      },
+      { day:"Day 5 (Fri)", subjects:[
+        {name:"Polity", badge:"polity", chapters:["Union and its Territory (Art 1-4)","Formation of new states, Alteration of boundaries"]},
+        {name:"Modern History", badge:"history", chapters:["Resistance to British Rule before 1857","Sanyasi Revolt, Paika Rebellion, Velu Nachiyar, Tribal revolts"]}
+      ],
+      mcqs:[
+        {type:"pyq",q:"Article 1 of the Indian Constitution describes India as:",opts:["A Federation of States","A Union of States","A Confederation","United States of India"],ans:1,exp:"Article 1 describes India as a 'Union of States', not a 'Federation'. This term was deliberately chosen to emphasize that India is not a result of agreement between states and no state has the right to secede."},
+        {type:"mcq",q:"Which of the following requires a simple majority in Parliament (not a Constitutional Amendment)?",opts:["Creation of new states","Amendment of Fundamental Rights","Election of President","Changing federal structure"],ans:0,exp:"Under Article 2-4, Parliament can create new states, alter boundaries, and change names of states by a simple majority. This is NOT considered a Constitutional Amendment under Article 368."},
+        {type:"pyq",q:"The Santhal Rebellion (1855-56) was led by:",opts:["Birsa Munda","Sidhu and Kanhu","Titumir","Tantia Tope"],ans:1,exp:"The Santhal Rebellion was led by brothers Sidhu and Kanhu Murmu against the oppressive zamindari system and British colonial rule in present-day Jharkhand."},
+        {type:"mcq",q:"Velu Nachiyar, who fought against the British, was the queen of:",opts:["Mysore","Sivaganga","Jhansi","Kittur"],ans:1,exp:"Velu Nachiyar was the queen of Sivaganga (Tamil Nadu) and is considered the first Indian queen to fight against British colonial power, even before Rani Lakshmibai."}
+      ],
+      mains:{q:"Discuss the nature and significance of early resistance movements against British rule before 1857. Were they merely localized revolts or precursors to a national movement? (250 words, 15 marks)",approach:["List key revolts: Sanyasi, Paika, Kol, Santhal, Munda","Analyze common causes: land alienation, exploitation, cultural suppression","Discuss limitations: localized, leaderless, lacked pan-Indian character","But: they established tradition of resistance","Conclude: they were precursors that inspired 1857 and later movements"],model:"The pre-1857 resistance movements, though often dismissed as isolated revolts, represent a significant tradition of indigenous opposition to British colonialism. The Sanyasi Revolt (1770s), Paika Rebellion (1817), Kol Uprising (1831), and Santhal Rebellion (1855-56) shared common underlying causes: land alienation, economic exploitation, destruction of traditional livelihoods, and cultural suppression.\n\nThese movements demonstrated remarkable organizational capacity and military resistance. The Santhals under Sidhu and Kanhu mobilized thousands against the zamindari system; Velu Nachiyar of Sivaganga employed guerrilla tactics decades before they became common in anti-colonial struggles.\n\nHowever, these revolts suffered from inherent limitations: they were geographically localized, lacked modern communication networks for coordination, had no unified ideology, and faced overwhelming British military superiority. They could not transcend regional, tribal, or caste boundaries to forge a pan-Indian consciousness.\n\nDespite these limitations, their significance is profound. They established a robust tradition of resistance, exposed the exploitative nature of colonial rule, and their memory inspired subsequent movements. The tribal revolts, in particular, highlighted issues of adivasi land rights that remain relevant today.\n\nIn conclusion, while these movements were not 'national' in scope, they were essential precursors that laid the psychological and moral groundwork for the broader freedom struggle, making them far more than mere localized revolts."}
+      },
+      { day:"Day 6 (Sat)", subjects:[
+        {name:"Polity", badge:"polity", chapters:["Citizenship (Art 5-11)","Acquisition and termination, Single citizenship, CAA 2019"]},
+        {name:"Modern History", badge:"history", chapters:["The Revolt of 1857","Causes, Course, Leaders, Impact, Reasons for Failure"]}
+      ],
+      mcqs:[
+        {type:"pyq",q:"Which Article of the Constitution deals with the Parliament's power to regulate citizenship?",opts:["Article 5","Article 9","Article 11","Article 14"],ans:2,exp:"Article 11 confers power on Parliament to make any provision with respect to the acquisition and termination of citizenship and all other matters relating to citizenship."},
+        {type:"mcq",q:"Under the Citizenship Amendment Act (CAA) 2019, which of the following communities is NOT covered?",opts:["Hindu","Sikh","Muslim","Buddhist"],ans:2,exp:"The CAA 2019 provides citizenship to persecuted religious minorities (Hindu, Sikh, Buddhist, Jain, Parsi, Christian) from Pakistan, Bangladesh, and Afghanistan who entered India before December 31, 2014. It does not include Muslims."},
+        {type:"pyq",q:"Who among the following was NOT a leader of the 1857 Revolt?",opts:["Rani Lakshmibai","Nana Saheb","Tipu Sultan","Tantia Tope"],ans:2,exp:"Tipu Sultan died in 1799 during the Fourth Anglo-Mysore War, nearly 60 years before the Revolt of 1857. The other three were prominent leaders of the 1857 uprising."},
+        {type:"mcq",q:"The immediate cause of the Revolt of 1857 was:",opts:["Doctrine of Lapse","Introduction of Enfield rifle cartridges","Annexation of Awadh","Taxation on Indian goods"],ans:1,exp:"The immediate cause was the introduction of Enfield rifle cartridges greased with cow and pig fat, which offended both Hindu and Muslim soldiers. However, the underlying causes were political, economic, and social."}
+      ],
+      mains:{q:"'The Revolt of 1857 was the first war of Indian independence.' Critically evaluate this statement. (250 words, 15 marks)",approach:["Present V.D. Savarkar's view (first war of independence)","Counter with British historians' view (sepoy mutiny)","Analyze: it had both military and civilian participation","Discuss limitations: not truly national, limited to certain regions","Conclude with balanced assessment"],model:"The characterization of the 1857 Revolt as the 'First War of Indian Independence,' first articulated by V.D. Savarkar in 1909, remains a subject of historical debate.\n\nSupporting this characterization: the revolt transcended a mere military mutiny. Civilian participation was significant — peasants, artisans, and displaced rulers joined the struggle. Leaders like Rani Lakshmibai, Tantia Tope, and Nana Saheb fought with clearly political objectives. The rebels restored the Mughal emperor Bahadur Shah Zafar as a symbolic sovereign, suggesting national aspirations.\n\nHowever, the revolt had significant limitations that challenge the 'national' characterization. It was largely confined to northern and central India — the Madras, Bombay, and Bengal Presidencies remained largely unaffected. Many Indian rulers (Scindia, Nizam, Sikh chiefs) actively supported the British. The rebels lacked a unified ideology, common programme, or coordinated strategy. Regional and communal divisions persisted.\n\nA balanced assessment recognizes the 1857 Revolt as more than a mutiny but less than a fully national movement. It represented a significant milestone in Indian resistance to colonialism, demonstrated the potential for mass mobilization against foreign rule, and provided inspiration for subsequent generations of freedom fighters.\n\nThe British response — dissolution of the East India Company, Queen's Proclamation, administrative reforms — itself acknowledged the revolt's political significance, making it a watershed moment in Indian colonial history."}
+      },
+      { day:"Day 7 (Sun)", sunday:true, subjects:[
+        {name:"📋 Weekly Revision & Current Affairs", badge:"revision", chapters:["Revise all Polity chapters: Historical Background to Citizenship","Revise all History chapters: Europeans to 1857 Revolt","Read weekly Current Affairs compilation","Practice 1 Essay outline: 'Is secularism under threat in India?'"]}
+      ],
+      mcqs:[
+        {type:"pyq",q:"REVISION: The Indian Constitution borrowed the concept of Fundamental Rights from:",opts:["British Constitution","US Constitution","Irish Constitution","French Constitution"],ans:1,exp:"Fundamental Rights were borrowed from the US Constitution. India borrowed from multiple sources: DPSP from Ireland, Federal structure from Canada, Emergency provisions from Germany, etc."},
+        {type:"mcq",q:"REVISION: The Battle of Buxar (1764) was fought between the British and:",opts:["Combined forces of Mir Qasim, Shuja-ud-Daulah, and Shah Alam II","Tipu Sultan and the Marathas","Siraj-ud-Daulah and French","Hyder Ali and Nizam"],ans:0,exp:"The Battle of Buxar was fought between the British and the combined forces of Mir Qasim (Bengal), Shuja-ud-Daulah (Awadh), and Shah Alam II (Mughal Emperor). British victory led to the Treaty of Allahabad."},
+        {type:"pyq",q:"REVISION: Which Amendment added Fundamental Duties to the Constitution?",opts:["42nd Amendment","44th Amendment","52nd Amendment","73rd Amendment"],ans:0,exp:"The 42nd Amendment Act of 1976 added Fundamental Duties (Article 51A) based on the Swaran Singh Committee recommendations. Originally 10 duties, the 86th Amendment (2002) added the 11th duty."},
+        {type:"mcq",q:"REVISION: After the Revolt of 1857, the governance of India was transferred to:",opts:["East India Company under new terms","British Parliament / Crown","Governor-General's Council","Board of Control"],ans:1,exp:"The Government of India Act 1858 transferred governance from the East India Company to the British Crown. The post of Secretary of State for India was created and the Viceroy replaced the Governor-General."}
+      ],
+      mains:{q:"SUNDAY MAINS PRACTICE: 'Indian federalism is not a result of an agreement between units, but a creation of the Constitution.' Discuss the federal features of the Indian Constitution. (250 words, 15 marks)",approach:["Explain why India is called 'Union of States' (Art 1)","List federal features: written constitution, division of powers, independent judiciary","List unitary features: single citizenship, all-India services, emergency provisions","Discuss: federation sui generis (of its own kind)","Conclude: unique Indian federalism serving national unity"],model:"India's federal character is unique — it emerged not from a voluntary union of sovereign states but from the Constitution itself. Article 1 deliberately uses 'Union of States' rather than 'Federation,' signaling that states have no right to secede.\n\nFederal features include: (1) Written and rigid Constitution; (2) Division of powers through three lists — Union, State, and Concurrent (Seventh Schedule); (3) Independent judiciary with power of judicial review; (4) Bicameral legislature at the Centre; (5) Supremacy of the Constitution.\n\nHowever, significant unitary features exist: (1) Strong Centre with residuary powers; (2) Single citizenship; (3) Integrated judiciary; (4) All-India Services (IAS, IPS, IFS); (5) Emergency provisions that can convert the federal system into a virtually unitary one; (6) Governor as Central nominee; (7) Parliament's power to alter state boundaries.\n\nThe Indian model is best described as 'federation sui generis' — a unique creation adapted to Indian realities. The Constituent Assembly, having witnessed Partition's horrors, deliberately tilted the balance toward the Centre to preserve national unity while respecting regional diversity.\n\nContemporary developments like GST Council, cooperative federalism initiatives, and NITI Aayog represent an evolving federal dialogue. The Supreme Court's recognition of federalism as a basic structure feature (S.R. Bommai case, 1994) has further strengthened this framework.\n\nThus, Indian federalism, though centralized by design, has demonstrated remarkable capacity for accommodating diverse demands while maintaining national cohesion."}
+      }
+    ]
+  }
+];
+
+// ============ RENDERING ============
+let totalScore = 0, totalAttempted = 0, totalCorrect = 0;
+
+function renderAll() {
+  const nav = document.getElementById('weekNav');
+  const content = document.getElementById('content');
+  
+  WEEKS.forEach((w, wi) => {
+    // Nav button
+    const btn = document.createElement('button');
+    btn.textContent = `Week ${w.week}`;
+    btn.onclick = () => {
+      document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.week').forEach(wk => { wk.querySelector('.week-body').classList.remove('show'); wk.querySelector('.week-header').classList.remove('open'); });
+      const target = document.getElementById(`week-${w.week}`);
+      target.querySelector('.week-body').classList.add('show');
+      target.querySelector('.week-header').classList.add('open');
+      target.scrollIntoView({behavior:'smooth'});
+    };
+    if(wi===0) btn.classList.add('active');
+    nav.appendChild(btn);
+
+    // Week card
+    const weekDiv = document.createElement('div');
+    weekDiv.className = 'week';
+    weekDiv.id = `week-${w.week}`;
+    
+    const weekHeader = document.createElement('div');
+    weekHeader.className = `week-header${wi===0?' open':''}`;
+    weekHeader.innerHTML = `<h2>${w.title} — ${w.block}</h2><span class="arrow">▼</span>`;
+    weekHeader.onclick = () => { weekHeader.classList.toggle('open'); weekDiv.querySelector('.week-body').classList.toggle('show'); };
+    
+    const weekBody = document.createElement('div');
+    weekBody.className = `week-body${wi===0?' show':''}`;
+    
+    w.days.forEach((d, di) => {
+      const dayDiv = document.createElement('div');
+      dayDiv.className = `day${d.sunday?' sunday':''}`;
+      
+      const dayHeader = document.createElement('div');
+      dayHeader.className = 'day-header';
+      const badges = d.subjects.map(s => `<span class="badge ${s.badge}">${s.name}</span>`).join(' ');
+      dayHeader.innerHTML = `<h3>${d.day}</h3><div>${badges}</div>`;
+      dayHeader.onclick = () => { dayDiv.querySelector('.day-content').classList.toggle('show'); };
+      
+      const dayContent = document.createElement('div');
+      dayContent.className = `day-content${di===0&&wi===0?' show':''}`;
+      
+      // Subjects
+      d.subjects.forEach(s => {
+        const sec = document.createElement('div');
+        sec.className = 'subject-section';
+        sec.innerHTML = `<h4>${s.name}</h4><ul class="chapters">${s.chapters.map(c => `<li>${c}</li>`).join('')}</ul>`;
+        dayContent.appendChild(sec);
+      });
+      
+      // MCQs
+      if(d.mcqs && d.mcqs.length) {
+        const mcqSec = document.createElement('div');
+        mcqSec.className = 'mcq-section';
+        mcqSec.innerHTML = `<h4>📝 Practice Questions (${d.mcqs.length} Questions)</h4>`;
+        
+        d.mcqs.forEach((m, mi) => {
+          const qId = `w${w.week}d${di}q${mi}`;
+          const qDiv = document.createElement('div');
+          qDiv.className = 'question';
+          qDiv.innerHTML = `
+            <span class="tag ${m.type}">${m.type === 'pyq' ? '📜 PYQ' : '🧠 MCQ'}</span>
+            <p class="q-text">Q${mi+1}. ${m.q}</p>
+            <div class="options">
+              ${m.opts.map((o, oi) => `<label><input type="radio" name="${qId}" value="${oi}"> ${String.fromCharCode(65+oi)}) ${o}</label>`).join('')}
+            </div>
+            <button class="check-btn" onclick="checkAnswer('${qId}',${m.ans},'${qId}-exp')">Check Answer</button>
+            <div class="explanation" id="${qId}-exp"><strong>Explanation:</strong> ${m.exp}</div>
+          `;
+          mcqSec.appendChild(qDiv);
+        });
+        dayContent.appendChild(mcqSec);
+      }
+      
+      // Mains
+      if(d.mains) {
+        const mainsSec = document.createElement('div');
+        mainsSec.className = 'mains-section';
+        mainsSec.innerHTML = `
+          <h4>✍️ Mains Answer Writing Practice</h4>
+          <p class="mains-q">${d.mains.q}</p>
+          <div class="approach">
+            <h5>📋 How to Approach This Question:</h5>
+            <ul>${d.mains.approach.map(a => `<li>${a}</li>`).join('')}</ul>
+          </div>
+          <details style="margin-top:10px;">
+            <summary style="cursor:pointer;color:var(--green);font-weight:700;">📖 View Model Answer</summary>
+            <div class="model-answer">
+              <h5>Model Answer:</h5>
+              <p style="white-space:pre-wrap;">${d.mains.model}</p>
+            </div>
+          </details>
+        `;
+        dayContent.appendChild(mainsSec);
+      }
+      
+      dayDiv.appendChild(dayHeader);
+      dayDiv.appendChild(dayContent);
+      weekBody.appendChild(dayDiv);
+    });
+    
+    weekDiv.appendChild(weekHeader);
+    weekDiv.appendChild(weekBody);
+    content.appendChild(weekDiv);
+  });
+}
+
+function checkAnswer(qId, correct, expId) {
+  const selected = document.querySelector(`input[name="${qId}"]:checked`);
+  if(!selected) { alert('Please select an option!'); return; }
+  
+  const val = parseInt(selected.value);
+  const expDiv = document.getElementById(expId);
+  
+  totalAttempted++;
+  if(val === correct) {
+    totalCorrect++;
+    totalScore += 2;
+    expDiv.className = 'explanation correct';
+    expDiv.style.display = 'block';
+    expDiv.innerHTML = '✅ <strong>Correct! (+2 marks)</strong><br>' + expDiv.innerHTML;
+  } else {
+    totalScore -= 0.67;
+    expDiv.className = 'explanation wrong';
+    expDiv.style.display = 'block';
+    expDiv.innerHTML = '❌ <strong>Wrong! (-0.67 marks)</strong><br>' + expDiv.innerHTML;
+  }
+  
+  // Disable options
+  document.querySelectorAll(`input[name="${qId}"]`).forEach(r => r.disabled = true);
+  
+  // Highlight correct answer
+  document.querySelectorAll(`input[name="${qId}"]`).forEach(r => {
+    if(parseInt(r.value) === correct) r.parentElement.style.borderColor = 'var(--green)';
+    else if(r.checked && parseInt(r.value) !== correct) r.parentElement.style.borderColor = 'var(--accent)';
+  });
+  
+  // Update stats
+  document.getElementById('totalScore').textContent = totalScore.toFixed(1);
+  document.getElementById('totalAttempted').textContent = totalAttempted;
+  document.getElementById('totalCorrect').textContent = totalCorrect;
+  document.getElementById('accuracy').textContent = totalAttempted > 0 ? Math.round((totalCorrect/totalAttempted)*100)+'%' : '0%';
+}
+
+renderAll();
+</script>
+</body>
+</html>

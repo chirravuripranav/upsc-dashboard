@@ -1,0 +1,6 @@
+Flask==2.3.3
+twilio==8.5.0
+groq==0.4.2
+fpdf2==2.7.9
+waitress==2.1.2
+python-dotenv==1.0.0
