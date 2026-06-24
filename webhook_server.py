@@ -26,9 +26,9 @@ NGROK_TOKEN = env.get('NGROK_TOKEN', '')
 CHAT_ID     = env.get('CHAT_ID', '')
 
 if not TWILIO_SID or not TWILIO_AUTH_TOKEN:
-    print('[ERROR] TWILIO_SID or TWILIO_AUTH_TOKEN missing in .env'); sys.exit(1)
+    print('[WARNING] TWILIO_SID or TWILIO_AUTH_TOKEN missing in .env. Bridge functions disabled, but web server will still run.')
 
-app = Flask(__name__, static_folder=r'c:\Users\prana\Downloads\project\pomopals-web', static_url_path='/app')
+app = Flask(__name__, static_folder='media', static_url_path='/app')
 
 from flask import send_from_directory
 
