@@ -261,6 +261,93 @@ NOTES:
         print(f"[ERROR] Groq generation failed: {e}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/generate_topic_mcqs', methods=['POST'])
+def generate_topic_mcqs():
+    data = request.json
+    subject = data.get('subject')
+    topic = data.get('topic')
+    groq_api_key = env.get('GROQ_API_KEY')
+    if not groq_api_key:
+        return jsonify({'error': 'GROQ_API_KEY missing'}), 500
+    try:
+        from groq import Groq
+        client = Groq(api_key=groq_api_key)
+        prompt = f"""You are an expert UPSC Prelims paper setter. The user is practicing the topic: '{topic}' from '{subject}'.
+Generate exactly 5 highly difficult UPSC-level MCQs.
+Use modern UPSC formats like:
+- Statement-based (Which of the statements given above is/are correct?)
+- Assertion-Reasoning
+- Matching pairs (How many pairs are correctly matched?)
+
+You MUST return the output in pure JSON format ONLY (no markdown blocks, no introduction).
+The JSON MUST perfectly match this schema:
+[
+  {{ "type": "mcq", "year": "AI Generated", "q": "Question text...", "opts": ["Option 1", "Option 2", "Option 3", "Option 4"], "ans": 0, "exp": "Detailed explanation." }}
+]
+"""
+        completion = client.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7,
+            max_tokens=2048,
+            top_p=1
+        )
+        response_text = completion.choices[0].message.content
+        import json
+        start_idx = response_text.find('[')
+        end_idx = response_text.rfind(']') + 1
+        mcqs = json.loads(response_text[start_idx:end_idx])
+        return jsonify(mcqs)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/generate_topic_mains', methods=['POST'])
+def generate_topic_mains():
+    data = request.json
+    subject = data.get('subject')
+    topic = data.get('topic')
+    groq_api_key = env.get('GROQ_API_KEY')
+    if not groq_api_key:
+        return jsonify({'error': 'GROQ_API_KEY missing'}), 500
+    try:
+        from groq import Groq
+        client = Groq(api_key=groq_api_key)
+        prompt = f"""You are an expert UPSC Mains paper setter. 
+Generate exactly 1 high-quality Mains question (250 words, 15 marks) for the topic '{topic}' in '{subject}'.
+Output MUST be pure JSON ONLY:
+{{ "q": "Question text...", "approach": ["Point 1", "Point 2", "Point 3"], "model": "Detailed model answer..." }}
+"""
+        completion = client.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7,
+            max_tokens=1024
+        )
+        response_text = completion.choices[0].message.content
+        import json
+        start_idx = response_text.find('{')
+        end_idx = response_text.rfind('}') + 1
+        mains = json.loads(response_text[start_idx:end_idx])
+        return jsonify(mains)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/topic_pyqs', methods=['GET'])
+def get_topic_pyqs():
+    subject = request.args.get('subject')
+    topic = request.args.get('topic')
+    import json
+    import os
+    try:
+        db_path = 'pyq_database.json'
+        if not os.path.exists(db_path):
+            return jsonify({"mcqs": [], "mains": []})
+        with open(db_path, 'r', encoding='utf-8') as f:
+            db = json.load(f)
+        data = db.get(subject, {}).get(topic, {"mcqs": [], "mains": []})
+        return jsonify(data)
+    except:
+        return jsonify({"mcqs": [], "mains": []})
 
 def setup_tunnel():
     from pyngrok import ngrok, conf

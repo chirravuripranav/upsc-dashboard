@@ -247,8 +247,8 @@ textarea:focus { outline: none; border-color: var(--accent-purple); box-shadow: 
     <!-- PANEL: MCQs -->
     <div class="panel" id="p-mcqs">
       <div class="glass-card" style="margin-bottom: 16px; padding: 16px 24px;">
-        <h2 style="font-family:'Outfit'; margin-bottom:4px; font-size:1.3em;">126-Day MCQ Bank</h2>
-        <p style="color:var(--text-muted); font-size:0.85em;">All days rendered. Scroll down to see future days.</p>
+        <h2 style="font-family:'Outfit'; margin-bottom:4px; font-size:1.3em;">Subject-Wise Question Bank</h2>
+        <p style="color:var(--text-muted); font-size:0.85em;">Select a topic to generate AI MCQs or solve real PYQs.</p>
       </div>
       <div class="scroll-container">
         <div class="day-list" id="mcqList"></div>
@@ -258,8 +258,8 @@ textarea:focus { outline: none; border-color: var(--accent-purple); box-shadow: 
     <!-- PANEL: MAINS -->
     <div class="panel" id="p-mains">
       <div class="glass-card" style="margin-bottom: 16px; padding: 16px 24px;">
-        <h2 style="font-family:'Outfit'; margin-bottom:4px; font-size:1.3em;">126-Day Mains Evaluator</h2>
-        <p style="color:var(--text-muted); font-size:0.85em;">Practice answers daily. Use the AI Lab for Current Affairs mains.</p>
+        <h2 style="font-family:'Outfit'; margin-bottom:4px; font-size:1.3em;">Subject-Wise Mains Evaluator</h2>
+        <p style="color:var(--text-muted); font-size:0.85em;">Write answers topic-wise and get AI evaluation based on standard books.</p>
       </div>
       <div class="scroll-container">
         <div class="day-list" id="mainsList"></div>
@@ -363,27 +363,44 @@ async function loadSyllabus() {
 }
 
 function renderLists() {
-  // Render ALL 126 days now (inside scroll container)
-  const mcqHtml = syllabusData.map(d => {
-    const isDone = localStorage.getItem('upsc_day' + d.day + '_score');
-    return `
-    <div class="day-item" onclick="window.open('quiz.html?day=${d.day}&type=mcq', '_blank')">
-      <div class="day-info">
-        <h3 style="color:var(--accent-blue)">Day ${d.day} <span style="font-size:0.75em; color:var(--text-muted); font-weight:500;">(${d.mcqs.length} MCQs)</span></h3>
-        <p>${d.title}</p>
+  const mcqHtml = syllabusData.map(subject => `
+    <div style="margin-bottom: 24px;">
+      <h3 style="font-family:'Outfit'; font-size:1.4em; color:var(--accent-purple); margin-bottom:12px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">${subject.title}</h3>
+      <div class="day-list">
+        ${subject.topics.map(topic => {
+          const isDone = localStorage.getItem('upsc_' + subject.id + '_' + topic.id + '_mcq');
+          return `
+          <div class="day-item" onclick="window.open('quiz.html?subject=${subject.id}&topic=${topic.id}&type=mcq', '_blank')">
+            <div class="day-info">
+              <h4 style="color:var(--accent-blue); margin-bottom:4px; font-size:1.1em;">${topic.title}</h4>
+              <p>Practice MCQs & PYQs</p>
+            </div>
+            <button class="btn" style="background:${isDone ? 'var(--accent-green)' : 'var(--accent-blue)'};">${isDone ? 'Completed ✓' : 'Practice MCQs'}</button>
+          </div>
+          `
+        }).join('')}
       </div>
-      <button class="btn" style="background:${isDone ? 'var(--accent-green)' : 'var(--accent-blue)'};">${isDone ? 'Completed ✓' : 'Start MCQs'}</button>
     </div>
-  `}).join('');
+  `).join('');
   document.getElementById('mcqList').innerHTML = mcqHtml;
 
-  const mainsHtml = syllabusData.map(d => `
-    <div class="day-item" onclick="window.open('quiz.html?day=${d.day}&type=mains', '_blank')">
-      <div class="day-info">
-        <h3 style="color:var(--accent-gold)">Day ${d.day} <span style="font-size:0.75em; color:var(--text-muted); font-weight:500;">(${d.mains.length} Qs)</span></h3>
-        <p>${d.title}</p>
+  const mainsHtml = syllabusData.map(subject => `
+    <div style="margin-bottom: 24px;">
+      <h3 style="font-family:'Outfit'; font-size:1.4em; color:var(--accent-gold); margin-bottom:12px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">${subject.title}</h3>
+      <div class="day-list">
+        ${subject.topics.map(topic => {
+          const isDone = localStorage.getItem('upsc_' + subject.id + '_' + topic.id + '_mains');
+          return `
+          <div class="day-item" onclick="window.open('quiz.html?subject=${subject.id}&topic=${topic.id}&type=mains', '_blank')">
+            <div class="day-info">
+              <h4 style="color:var(--accent-gold); margin-bottom:4px; font-size:1.1em;">${topic.title}</h4>
+              <p>Write & Evaluate Answer</p>
+            </div>
+            <button class="btn" style="background:${isDone ? 'var(--accent-green)' : 'var(--accent-gold)'};">${isDone ? 'Completed ✓' : 'Write Answer'}</button>
+          </div>
+          `
+        }).join('')}
       </div>
-      <button class="btn" style="background:var(--accent-gold);">Write Answer</button>
     </div>
   `).join('');
   document.getElementById('mainsList').innerHTML = mainsHtml;

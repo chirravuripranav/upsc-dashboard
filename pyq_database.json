@@ -1,0 +1,47 @@
+{
+  "polity": {
+    "historical_background": {
+      "mcqs": [
+        {
+          "type": "pyq",
+          "year": "2019",
+          "q": "Which of the following Acts created the Supreme Court at Calcutta?",
+          "opts": [
+            "Regulating Act, 1773",
+            "Pitt's India Act, 1784",
+            "Charter Act, 1813",
+            "Government of India Act, 1858"
+          ],
+          "ans": 0,
+          "exp": "The Regulating Act of 1773 established the Supreme Court at Calcutta as the first court of judicature in India. Sir Elijah Impey was its first Chief Justice."
+        },
+        {
+          "type": "pyq",
+          "year": "2015",
+          "q": "Under which of the following Acts was the Board of Control established?",
+          "opts": [
+            "Regulating Act, 1773",
+            "Pitt's India Act, 1784",
+            "Charter Act, 1853",
+            "Indian Councils Act, 1861"
+          ],
+          "ans": 1,
+          "exp": "Pitt's India Act 1784 created two bodies: (1) Board of Control for political affairs, and (2) Court of Directors for commercial affairs. This established a system of double government."
+        }
+      ],
+      "mains": [
+        {
+          "type": "pyq",
+          "year": "2019",
+          "q": "Trace the evolution of the East India Company from a trading body to a political power in India. What were the key milestones in this transformation?",
+          "approach": [
+            "Start with establishment of EIC in 1600 as a trading company",
+            "Discuss the pivotal Battle of Plassey (1757) and Battle of Buxar (1764)",
+            "Cover the Regulating Act 1773 and Pitt's India Act 1784"
+          ],
+          "model": "The East India Company (EIC), established by Royal Charter in 1600, underwent a remarkable transformation...\nPhase 1 — Trading Company (1600-1757)...\nPhase 2 — Military-Political Power (1757-1784)..."
+        }
+      ]
+    }
+  }
+}

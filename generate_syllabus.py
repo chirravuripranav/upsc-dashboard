@@ -1,81 +1,85 @@
 import json
-import random
+import os
 
-WEEKS = 18
-DAYS_PER_WEEK = 7
-TOTAL_DAYS = WEEKS * DAYS_PER_WEEK
+def create_syllabus():
+    syllabus = [
+        {
+            "id": "polity",
+            "title": "Indian Polity (M. Laxmikanth)",
+            "topics": [
+                { "id": "historical_background", "title": "Historical Background" },
+                { "id": "making_of_constitution", "title": "Making of the Constitution" },
+                { "id": "salient_features", "title": "Salient Features of the Constitution" },
+                { "id": "preamble", "title": "Preamble of the Constitution" },
+                { "id": "union_and_territory", "title": "Union and its Territory" },
+                { "id": "citizenship", "title": "Citizenship" },
+                { "id": "fundamental_rights", "title": "Fundamental Rights" },
+                { "id": "dpsp", "title": "Directive Principles of State Policy" },
+                { "id": "fundamental_duties", "title": "Fundamental Duties" },
+                { "id": "amendment", "title": "Amendment of the Constitution" }
+            ]
+        },
+        {
+            "id": "history",
+            "title": "Modern History (Spectrum)",
+            "topics": [
+                { "id": "advent_europeans", "title": "Advent of Europeans in India" },
+                { "id": "british_expansion", "title": "Expansion and Consolidation of British Power" },
+                { "id": "revolt_1857", "title": "The Revolt of 1857" },
+                { "id": "socio_religious", "title": "Socio-Religious Reform Movements" },
+                { "id": "early_nationalism", "title": "Beginnings of Modern Nationalism" },
+                { "id": "inc_foundation", "title": "Indian National Congress: Foundation and Moderate Phase" },
+                { "id": "extremist_phase", "title": "Era of Militant Nationalism (1905-1909)" },
+                { "id": "gandhian_era_early", "title": "Emergence of Gandhi" },
+                { "id": "non_cooperation", "title": "Non-Cooperation Movement and Khilafat Aandolan" },
+                { "id": "civil_disobedience", "title": "Civil Disobedience Movement and Round Table Conferences" }
+            ]
+        }
+    ]
 
-# Base subjects per phase mapping
-SUBJECTS = [
-    {"name": "Polity", "topics": ["Historical Background", "Preamble", "Fundamental Rights", "DPSP", "Parliament", "Supreme Court", "State Govt", "Panchayati Raj", "Constitutional Bodies"]},
-    {"name": "History", "topics": [
-        "Prehistoric Cultures", "Indus Valley Civilisation", "Vedic Society", 
-        "Pre-Maurya Period", "The Mauryan Empire", "Post-Mauryan India", 
-        "The Guptas and Their Successors", "Society and Culture", 
-        "Early Medieval India", "The Delhi Sultanate", "Post-Independence India"
-    ]},
-    {"name": "Economy", "topics": ["National Income", "Inflation", "Monetary Policy", "Fiscal Policy", "Banking", "Agriculture", "Industry", "External Sector", "Infrastructure"]},
-    {"name": "Geography", "topics": ["Geomorphology", "Climatology", "Oceanography", "Indian Physiography", "Drainage System", "Climate of India", "Soils & Veg", "Economic Geo", "Human Geo"]}
-]
+    with open('media/syllabus.json', 'w', encoding='utf-8') as f:
+        json.dump(syllabus, f, indent=2, ensure_ascii=False)
+    print("Created media/syllabus.json")
 
-def generate_mcq(subject, topic, index):
-    return {
-        "id": f"q_{index}",
-        "text": f"Consider the following statements regarding {topic} in the context of {subject}:\n1. Statement one is a factual assertion often seen in UPSC PYQs.\n2. Statement two is an analytical deduction with a subtle trap.\nWhich of the statements given above is/are correct?",
-        "options": ["1 only", "2 only", "Both 1 and 2", "Neither 1 nor 2"],
-        "correctIndex": random.choice([0, 1, 2, 3]),
-        "explanation": f"Explanation for {topic}: Statement 1 is analyzed here. Statement 2 is analyzed here. This pattern reflects the UPSC trend of testing conceptual clarity over rote memorization.",
-        "year": random.choice(["2022", "2021", "2020", "2018", "Simulated"])
+def create_pyq_db():
+    pyq_db = {
+        "polity": {
+            "historical_background": {
+                "mcqs": [
+                    {
+                        "type": "pyq",
+                        "year": "2019",
+                        "q": "Which of the following Acts created the Supreme Court at Calcutta?",
+                        "opts": ["Regulating Act, 1773", "Pitt's India Act, 1784", "Charter Act, 1813", "Government of India Act, 1858"],
+                        "ans": 0,
+                        "exp": "The Regulating Act of 1773 established the Supreme Court at Calcutta as the first court of judicature in India. Sir Elijah Impey was its first Chief Justice."
+                    },
+                    {
+                        "type": "pyq",
+                        "year": "2015",
+                        "q": "Under which of the following Acts was the Board of Control established?",
+                        "opts": ["Regulating Act, 1773", "Pitt's India Act, 1784", "Charter Act, 1853", "Indian Councils Act, 1861"],
+                        "ans": 1,
+                        "exp": "Pitt's India Act 1784 created two bodies: (1) Board of Control for political affairs, and (2) Court of Directors for commercial affairs. This established a system of double government."
+                    }
+                ],
+                "mains": [
+                    {
+                        "type": "pyq",
+                        "year": "2019",
+                        "q": "Trace the evolution of the East India Company from a trading body to a political power in India. What were the key milestones in this transformation?",
+                        "approach": ["Start with establishment of EIC in 1600 as a trading company", "Discuss the pivotal Battle of Plassey (1757) and Battle of Buxar (1764)", "Cover the Regulating Act 1773 and Pitt's India Act 1784"],
+                        "model": "The East India Company (EIC), established by Royal Charter in 1600, underwent a remarkable transformation...\nPhase 1 — Trading Company (1600-1757)...\nPhase 2 — Military-Political Power (1757-1784)..."
+                    }
+                ]
+            }
+        }
     }
 
-def generate_mains(subject, topic):
-    return {
-        "question": f"Discuss the significance of {topic} in shaping the modern discourse on {subject}. Critically analyze its impact on contemporary governance. (250 words, 15 marks)",
-        "approach": f"**Introduction**: Define {topic} briefly.\n**Body**: Point 1. Point 2. Provide recent examples.\n**Conclusion**: Summarize its long-term relevance.",
-        "model_answer": f"The evolution of {topic} within {subject} is a cornerstone of Indian administration. It began with early reforms and culminated in recent policy shifts...",
-        "year": random.choice(["2019", "2020", "2021", "2023"])
-    }
+    with open('pyq_database.json', 'w', encoding='utf-8') as f:
+        json.dump(pyq_db, f, indent=2, ensure_ascii=False)
+    print("Created pyq_database.json")
 
-syllabus = []
-
-for day in range(1, TOTAL_DAYS + 1):
-    week = ((day - 1) // 7) + 1
-    
-    # Subjects change every few weeks
-    sub1 = SUBJECTS[(week-1) % 4]
-    sub2 = SUBJECTS[(week) % 4]
-    
-    topic1 = random.choice(sub1["topics"])
-    topic2 = random.choice(sub2["topics"])
-    
-    is_sunday = (day % 7 == 0)
-    
-    title = f"Day {day} — Revision & Mock Test" if is_sunday else f"Day {day} — {sub1['name']}: {topic1} + {sub2['name']}: {topic2}"
-    
-    mcqs = []
-    num_mcqs = 40 if is_sunday else 15
-    for i in range(num_mcqs):
-        s = sub1 if i % 2 == 0 else sub2
-        t = topic1 if i % 2 == 0 else topic2
-        mcqs.append(generate_mcq(s['name'], t, i))
-        
-    mains = []
-    num_mains = 5 if is_sunday else 2
-    for i in range(num_mains):
-        s = sub1 if i % 2 == 0 else sub2
-        t = topic1 if i % 2 == 0 else topic2
-        mains.append(generate_mains(s['name'], t))
-
-    syllabus.append({
-        "day": day,
-        "week": week,
-        "title": title,
-        "is_sunday": is_sunday,
-        "mcqs": mcqs,
-        "mains": mains
-    })
-
-with open('media/syllabus.json', 'w', encoding='utf-8') as f:
-    json.dump(syllabus, f, indent=2)
-
-print("Generated syllabus.json with 126 days of content.")
+if __name__ == '__main__':
+    create_syllabus()
+    create_pyq_db()

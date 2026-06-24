@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UPSC Daily Quiz</title>
+<title>UPSC Subject Quiz</title>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root { --purple: #673ab7; --purple-dark: #512da8; --purple-light: #ede7f6; --red: #d93025; --green: #0d652d; --green-bg: #e6f4ea; --red-bg: #fce8e6; --bg: #f0ebf8; --white: #fff; --text: #202124; --muted: #5f6368; --border: #dadce0; }
@@ -18,9 +18,10 @@ body { font-family:'Roboto','Google Sans',sans-serif; background:var(--bg); colo
 .header-card h1 { font-family:'Google Sans',sans-serif; font-size:2em; font-weight:400; color:var(--text); margin-bottom:8px; }
 .header-card .desc { color:var(--muted); font-size:0.95em; line-height:1.5; }
 .header-card .required { color:var(--red); font-size:0.85em; margin-top:12px; }
-.day-nav { display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
-.day-nav a { padding:8px 16px; border-radius:20px; background:var(--purple-light); color:var(--purple); text-decoration:none; font-size:0.85em; font-weight:500; transition:all 0.2s; }
-.day-nav a:hover, .day-nav a.active { background:var(--purple); color:#fff; }
+
+.controls { margin-top: 16px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; background: #f8f9fa; padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
+.controls label { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 0.9em; cursor: pointer; }
+.controls input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
 
 /* Score Card */
 .score-card { background:var(--white); border-radius:8px; padding:20px 24px; margin-bottom:12px; box-shadow:0 1px 2px rgba(0,0,0,0.1); display:none; }
@@ -44,14 +45,12 @@ body { font-family:'Roboto','Google Sans',sans-serif; background:var(--bg); colo
 .question-card .tag.pyq { background:#f3e5f5; color:#7b1fa2; }
 .question-card .tag.mcq { background:#e3f2fd; color:#1565c0; }
 .question-card .q-num { font-size:0.85em; color:var(--muted); margin-bottom:6px; }
-.question-card .q-text { font-size:1em; font-weight:500; line-height:1.5; margin-bottom:16px; }
+.question-card .q-text { font-size:1em; font-weight:500; line-height:1.5; margin-bottom:16px; white-space: pre-wrap; }
 
 /* Radio Options */
 .option { display:flex; align-items:flex-start; gap:12px; padding:12px 16px; margin:6px 0; border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:all 0.2s; }
 .option:hover { background:#f8f9fa; border-color:#bbb; }
 .option.selected { border-color:var(--purple); background:var(--purple-light); }
-.option.correct-answer { border-color:var(--green); background:var(--green-bg); }
-.option.wrong-answer { border-color:var(--red); background:var(--red-bg); }
 .option input[type="radio"] { appearance:none; width:20px; height:20px; border:2px solid var(--muted); border-radius:50%; flex-shrink:0; margin-top:2px; position:relative; cursor:pointer; }
 .option input[type="radio"]:checked { border-color:var(--purple); }
 .option input[type="radio"]:checked::after { content:''; position:absolute; top:3px; left:3px; width:10px; height:10px; background:var(--purple); border-radius:50%; }
@@ -71,7 +70,7 @@ body { font-family:'Roboto','Google Sans',sans-serif; background:var(--bg); colo
 /* Mains Card */
 .mains-card { background:var(--white); border-radius:8px; padding:24px; margin-bottom:12px; box-shadow:0 1px 2px rgba(0,0,0,0.1); border-left:4px solid #f9a825; }
 .mains-card h3 { font-family:'Google Sans',sans-serif; color:#f57f17; margin-bottom:12px; font-size:1.1em; }
-.mains-card .mains-q { font-weight:500; font-size:1em; line-height:1.5; margin-bottom:16px; padding:12px; background:#fff8e1; border-radius:8px; }
+.mains-card .mains-q { font-weight:500; font-size:1em; line-height:1.5; margin-bottom:16px; padding:12px; background:#fff8e1; border-radius:8px; white-space: pre-wrap;}
 .mains-card .approach-box { background:#f5f5f5; border-left:3px solid var(--purple); padding:14px; border-radius:0 8px 8px 0; margin:10px 0; }
 .mains-card .approach-box h4 { color:var(--purple); font-size:0.9em; margin-bottom:8px; }
 .mains-card .approach-box li { margin:6px 0; font-size:0.9em; color:var(--muted); }
@@ -84,175 +83,175 @@ body { font-family:'Roboto','Google Sans',sans-serif; background:var(--bg); colo
 .submit-btn { padding:12px 32px; background:var(--purple); color:#fff; border:none; border-radius:4px; font-size:1em; font-weight:500; cursor:pointer; font-family:'Google Sans',sans-serif; transition:background 0.2s; }
 .submit-btn:hover { background:var(--purple-dark); }
 .submit-btn:disabled { background:#bbb; cursor:not-allowed; }
-.clear-btn { color:var(--purple); background:none; border:none; font-size:0.9em; cursor:pointer; font-weight:500; }
 
-/* Chapter Info Card */
-.info-card { background:var(--white); border-radius:8px; padding:20px 24px; margin-bottom:12px; box-shadow:0 1px 2px rgba(0,0,0,0.1); border-left:4px solid var(--purple); }
-.info-card h3 { font-family:'Google Sans',sans-serif; color:var(--purple); margin-bottom:10px; }
-.info-card ul { margin-left:20px; }
-.info-card li { margin:6px 0; color:var(--muted); font-size:0.9em; }
-.info-card .subj-tag { display:inline-block; padding:4px 12px; border-radius:16px; font-size:0.8em; font-weight:500; margin:4px 4px 4px 0; }
-.info-card .subj-tag.polity { background:#e3f2fd; color:#1565c0; }
-.info-card .subj-tag.history { background:#f3e5f5; color:#7b1fa2; }
+.loading { text-align: center; padding: 40px; color: var(--purple); font-weight: bold; font-size: 1.2em; display: none; }
 
 @media print {
   body { background:#fff; }
-  .day-nav, .submit-section, .submit-btn, .clear-btn { display:none !important; }
-  .question-card, .header-card, .info-card, .mains-card, .score-card { box-shadow:none; break-inside:avoid; }
+  .controls, .submit-section { display:none !important; }
+  .question-card, .header-card, .mains-card, .score-card { box-shadow:none; break-inside:avoid; }
 }
 </style>
 </head>
 <body>
-<div class="form-container" id="app"></div>
+<div class="form-container">
+  <div class="header-card">
+    <h1 id="headerTitle">Loading...</h1>
+    <p class="desc" id="headerDesc">Subject / Topic Question Bank</p>
+    <div class="controls" id="controlsDiv">
+      <label><input type="checkbox" id="chkAI" checked> Generate AI MCQs</label>
+      <label><input type="checkbox" id="chkPYQ" checked> Include Real PYQs</label>
+      <button class="submit-btn" style="padding: 8px 16px; font-size: 0.9em;" onclick="fetchQuestions()">Load Questions</button>
+    </div>
+  </div>
+
+  <div class="loading" id="loader">🧠 Groq AI is analyzing the topic and setting the paper...</div>
+  <div class="score-card" id="scoreCard"></div>
+  <div id="qContainer"></div>
+  
+  <div class="submit-section" id="submitSec" style="display:none;">
+    <button class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit Answers</button>
+  </div>
+</div>
 
 <script>
-const DAYS = {
-  1: {
-    title: "Day 1 — Monday, June 22",
-    subjects: [
-      { name:"Indian Polity", tag:"polity", chapters:["Historical Background of the Constitution","Key Acts: Regulating Act 1773, Pitt's India Act 1784, Charter Acts 1813/1833/1853"] },
-      { name:"Modern History", tag:"history", chapters:["Advent of Europeans in India","Portuguese, Dutch, French, English — Trading rivalries"] }
-    ],
-    questions: [
-      {type:"pyq",year:"2019",q:"Which of the following Acts created the Supreme Court at Calcutta?",opts:["Regulating Act, 1773","Pitt's India Act, 1784","Charter Act, 1813","Government of India Act, 1858"],ans:0,exp:"The Regulating Act of 1773 established the Supreme Court at Calcutta as the first court of judicature in India. Sir Elijah Impey was its first Chief Justice."},
-      {type:"pyq",year:"2017",q:"The Charter Act of 1833 made the Governor-General of Bengal as:",opts:["Governor-General of India","Viceroy of India","Secretary of State for India","Commander-in-Chief of India"],ans:0,exp:"The Charter Act of 1833 created the post of Governor-General of India. Lord William Bentinck became the first Governor-General of India."},
-      {type:"pyq",year:"2015",q:"Under which of the following Acts was the Board of Control established?",opts:["Regulating Act, 1773","Pitt's India Act, 1784","Charter Act, 1853","Indian Councils Act, 1861"],ans:1,exp:"Pitt's India Act 1784 created two bodies: (1) Board of Control for political affairs, and (2) Court of Directors for commercial affairs. This established a system of double government."},
-      {type:"mcq",year:"—",q:"Which Charter Act ended the commercial activities of the East India Company?",opts:["Charter Act of 1793","Charter Act of 1813","Charter Act of 1833","Charter Act of 1853"],ans:2,exp:"The Charter Act of 1833 ended the commercial activities of the East India Company, making it a purely administrative body."},
-      {type:"pyq",year:"2021",q:"Who was the first Portuguese Viceroy in India?",opts:["Vasco da Gama","Francisco de Almeida","Alfonso de Albuquerque","Nuno da Cunha"],ans:1,exp:"Francisco de Almeida was the first Portuguese Viceroy (1505-1509). He followed the policy of 'Blue Water' (Cartaze system) to establish naval supremacy."},
-      {type:"mcq",year:"—",q:"The Battle of Wandiwash (1760) was fought between:",opts:["British and French","British and Dutch","French and Portuguese","British and Marathas"],ans:0,exp:"The Battle of Wandiwash (1760) was the decisive battle between British and French forces in India. British victory under Sir Eyre Coote ended French ambitions in India."},
-      {type:"pyq",year:"2018",q:"The Act of 1858 transferred the governance of India from the East India Company to:",opts:["British Parliament","Board of Control","Court of Directors","Governor-General's Council"],ans:0,exp:"The Government of India Act 1858 transferred governance from the East India Company to the British Crown/Parliament. The post of Secretary of State for India was created."},
-      {type:"mcq",year:"—",q:"Which European power first established a trading factory at Surat?",opts:["Portuguese","Dutch","English","French"],ans:2,exp:"The English East India Company established its first factory at Surat in 1613, after receiving a firman from Mughal Emperor Jahangir."},
-      {type:"pyq",year:"2016",q:"The first English factory in India was established at:",opts:["Surat","Masulipatnam","Madras","Hooghly"],ans:1,exp:"The first English factory was established at Masulipatnam (Machilipatnam) in 1611 on the east coast. Surat factory (1613) was the first on the west coast."},
-      {type:"mcq",year:"—",q:"Which Act introduced the system of 'open competition' for selection of civil servants?",opts:["Charter Act of 1813","Charter Act of 1833","Charter Act of 1853","Indian Councils Act of 1861"],ans:2,exp:"The Charter Act of 1853 introduced the system of open competition for the recruitment of civil servants. It also separated the legislative and executive functions of the Governor-General's Council."}
-    ],
-    mains: {
-      q: "Trace the evolution of the East India Company from a trading body to a political power in India. What were the key milestones in this transformation? (250 words, 15 marks) [UPSC 2019 GS-I]",
-      approach: ["Start with establishment of EIC in 1600 as a trading company","Discuss the pivotal Battle of Plassey (1757) and Battle of Buxar (1764)","Cover the Regulating Act 1773 — first parliamentary intervention","Explain Pitt's India Act 1784 — dual government system","Mention Subsidiary Alliance (Wellesley) and Doctrine of Lapse (Dalhousie)","Conclude with Charter Act 1833 ending commercial activities"],
-      model: "The East India Company (EIC), established by Royal Charter in 1600, underwent a remarkable transformation from a commercial enterprise to the de facto sovereign of India over two centuries.\n\nPhase 1 — Trading Company (1600-1757): The EIC initially focused on spice and textile trade, establishing factories at Masulipatnam (1611), Surat (1613), and later at Madras, Bombay, and Calcutta. It operated within the Mughal framework, seeking trading privileges through farmans.\n\nPhase 2 — Military-Political Power (1757-1784): The Battle of Plassey (1757) was the decisive turning point, where Robert Clive's victory over Nawab Siraj-ud-Daulah gave the Company control over Bengal's revenues. The Battle of Buxar (1764) consolidated this, leading to the Diwani of Bengal, Bihar, and Orissa. The Regulating Act (1773) marked Parliament's first intervention, establishing the Supreme Court at Calcutta.\n\nPhase 3 — Administrative Consolidation (1784-1857): Pitt's India Act (1784) created a dual government system. Lord Wellesley's Subsidiary Alliance System expanded territorial control, while Lord Dalhousie's Doctrine of Lapse annexed states like Satara, Jhansi, and Nagpur. The Charter Act of 1833 finally ended all commercial activities.\n\nThis evolution was facilitated by superior military technology, exploitation of India's political fragmentation, strategic diplomacy, and the decline of the Mughal Empire. The Revolt of 1857 ultimately led to the dissolution of the Company and direct Crown rule through the Government of India Act, 1858."
-    }
-  },
-  2: {
-    title: "Day 2 — Tuesday, June 23",
-    subjects: [
-      { name:"Indian Polity", tag:"polity", chapters:["Making of the Constitution","Constituent Assembly: Composition, Committees, Drafting process"] },
-      { name:"Modern History", tag:"history", chapters:["India on the Eve of British Conquest","Decline of Mughal Empire, Rise of Regional Powers (Marathas, Sikhs, Nawabs)"] }
-    ],
-    questions: [
-      {type:"pyq",year:"2015",q:"Who among the following first proposed the idea of a Constituent Assembly for India?",opts:["Swaraj Party in 1928","Indian National Congress in 1936","Muslim League in 1940","M.N. Roy in 1934"],ans:3,exp:"M.N. Roy, a pioneer of the Communist movement in India, first proposed the idea of a Constituent Assembly for India in 1934. The INC officially demanded it in 1935."},
-      {type:"pyq",year:"2018",q:"The Constituent Assembly was formed on the recommendation of:",opts:["Cripps Mission, 1942","August Offer, 1940","Cabinet Mission Plan, 1946","Mountbatten Plan, 1947"],ans:2,exp:"The Cabinet Mission Plan (1946) recommended the formation of a Constituent Assembly. Elections were held in July-August 1946."},
-      {type:"pyq",year:"2013",q:"Who was the Chairman of the Drafting Committee of the Indian Constitution?",opts:["Dr. Rajendra Prasad","Jawaharlal Nehru","Dr. B.R. Ambedkar","Sardar Vallabhbhai Patel"],ans:2,exp:"Dr. B.R. Ambedkar was the Chairman of the 7-member Drafting Committee. He is rightly called the 'Father of the Indian Constitution'."},
-      {type:"mcq",year:"—",q:"The Constituent Assembly took how many years, months and days to complete the Constitution?",opts:["2 years, 11 months, 17 days","2 years, 11 months, 18 days","3 years, 1 month, 2 days","2 years, 10 months, 15 days"],ans:1,exp:"The Constituent Assembly took 2 years, 11 months and 18 days to complete the Constitution. It held 11 sessions and 165 days of sitting."},
-      {type:"pyq",year:"2020",q:"The Objectives Resolution was moved in the Constituent Assembly by:",opts:["Dr. B.R. Ambedkar","Sardar Patel","Jawaharlal Nehru","Dr. Rajendra Prasad"],ans:2,exp:"Jawaharlal Nehru moved the historic Objectives Resolution on December 13, 1946. It was adopted on January 22, 1947 and later became the basis of the Preamble."},
-      {type:"mcq",year:"—",q:"Which Mughal emperor's death in 1707 is considered the beginning of Mughal decline?",opts:["Shah Jahan","Aurangzeb","Bahadur Shah I","Muhammad Shah"],ans:1,exp:"Aurangzeb's death in 1707 marked the beginning of rapid Mughal decline. His long Deccan wars, religious policies, and succession conflicts weakened the empire."},
-      {type:"pyq",year:"2017",q:"The 'Dual Government' system in Bengal was introduced by:",opts:["Lord Clive","Lord Cornwallis","Warren Hastings","Lord Wellesley"],ans:0,exp:"Robert Clive introduced the Dual Government system in Bengal (1765) after obtaining the Diwani. The Nawab had responsibility but no power; the Company had power but no responsibility."},
-      {type:"mcq",year:"—",q:"Which regional power replaced the Mughals as the dominant force in western India?",opts:["Sikhs","Rajputs","Marathas","Jats"],ans:2,exp:"The Marathas under the Peshwas became the dominant power in western and central India after the decline of the Mughals. They controlled a vast territory through the Confederacy system."},
-      {type:"pyq",year:"2019",q:"The Constitution of India was adopted on:",opts:["January 26, 1950","November 26, 1949","August 15, 1947","January 26, 1949"],ans:1,exp:"The Constitution was adopted on November 26, 1949 (now celebrated as Constitution Day). It came into effect on January 26, 1950 (Republic Day)."},
-      {type:"mcq",year:"—",q:"How many members were originally in the Constituent Assembly as per the Cabinet Mission Plan?",opts:["299","389","296","385"],ans:1,exp:"The Cabinet Mission Plan allocated 389 members (292 from British provinces + 93 from princely states + 4 from chief commissioner's provinces). After partition, it was reduced to 299."}
-    ],
-    mains: {
-      q: "Discuss the role of Dr. B.R. Ambedkar in the making of the Indian Constitution. How does his vision of social justice remain relevant today? (250 words, 15 marks) [UPSC 2020 GS-I]",
-      approach: ["Introduce Ambedkar as Chairman of Drafting Committee","Highlight his emphasis on social justice, equality, fraternity","Discuss specific contributions: Articles 14, 15, 17, 21, reservations","Connect to contemporary issues: caste discrimination, EWS reservation","Mention his advocacy for women's rights (Hindu Code Bill)","Conclude with enduring relevance of constitutional morality"],
-      model: "Dr. B.R. Ambedkar's contribution to the Indian Constitution transcends his role as Chairman of the Drafting Committee. His lived experience of caste discrimination profoundly shaped the constitutional framework's commitment to equality, liberty, and social justice.\n\nConstitutional Contributions:\nAmbedkar championed justiciable fundamental rights — Article 14 (equality before law), Article 15 (prohibition of discrimination), Article 17 (abolition of untouchability), and Article 21 (right to life and personal liberty). He advocated for reservations (Articles 15(4), 16(4)) as instruments of substantive equality, recognizing that formal equality alone cannot rectify centuries of structural oppression.\n\nHis concept of 'constitutional morality' — governing through democratic institutions and processes rather than personality-driven politics — remains a foundational principle. The Supreme Court has repeatedly invoked this concept in landmark cases, including Navtej Singh Johar (2018) on LGBTQ+ rights.\n\nContemporary Relevance:\nAmbedkar's vision directly addresses today's challenges: the ongoing debate around EWS reservations (103rd Amendment), caste-based atrocities despite legal protections, and the unfinished agenda of the Uniform Civil Code (Article 44). His advocacy for women's rights through the Hindu Code Bill, though initially defeated, eventually led to transformative legislation.\n\nThe recent emphasis on 'one person, one vote, one value' in delimitation debates echoes his commitment to representative democracy. His warning against 'constitutional methods' being abandoned for 'grammar of anarchy' remains prescient.\n\nThus, Ambedkar's constitutional vision serves as both the foundation and the continuing moral compass of Indian democracy, making his contributions eternally relevant."
-    }
-  }
-};
+// ============ STATE ============
+const urlParams = new URLSearchParams(window.location.search);
+const subjectId = urlParams.get('subject') || 'polity';
+const topicId = urlParams.get('topic') || 'historical_background';
+const quizType = urlParams.get('type') || 'mcq'; // mcq or mains
+const API = window.location.origin;
 
-// ============ RENDERING ============
+let questions = [];
 let score = 0, attempted = 0, correct = 0, submitted = false;
 
-function loadDay(dayNum) {
-  const day = DAYS[dayNum];
-  if (!day) return;
+document.getElementById('headerTitle').innerHTML = `📝 ${subjectId.toUpperCase()} — ${topicId.replace(/_/g, ' ').toUpperCase()}`;
+
+async function fetchQuestions() {
+  const includeAI = document.getElementById('chkAI').checked;
+  const includePYQ = document.getElementById('chkPYQ').checked;
   
-  score = 0; attempted = 0; correct = 0; submitted = false;
-  const app = document.getElementById('app');
-  app.innerHTML = '';
+  if (!includeAI && !includePYQ) {
+    alert("Please select at least one source (AI or PYQ)");
+    return;
+  }
 
-  // Header
-  const header = document.createElement('div');
-  header.className = 'header-card';
-  header.innerHTML = `
-    <h1>📝 ${day.title}</h1>
-    <p class="desc">UPSC Do-or-Die Foundation Phase — Daily Quiz & Mains Practice<br>10 Questions (PYQs + MCQs) • 1 Mains Answer Writing • UPSC-style marking (+2, -0.67)</p>
-    <p class="required">* All questions are compulsory</p>
-    <div class="day-nav">
-      ${Object.keys(DAYS).map(d => `<a href="?day=${d}" class="${d==dayNum?'active':''}" onclick="event.preventDefault();loadDay(${d});">Day ${d}</a>`).join('')}
-    </div>
-  `;
-  app.appendChild(header);
+  document.getElementById('qContainer').innerHTML = '';
+  document.getElementById('submitSec').style.display = 'none';
+  document.getElementById('scoreCard').className = 'score-card';
+  document.getElementById('loader').style.display = 'block';
+  questions = [];
+  submitted = false;
 
-  // Score Card (hidden until submit)
-  const scoreCard = document.createElement('div');
-  scoreCard.className = 'score-card';
-  scoreCard.id = 'scoreCard';
-  app.appendChild(scoreCard);
+  try {
+    let pyqData = {mcqs: [], mains: []};
+    if (includePYQ) {
+      const r = await fetch(`${API}/api/topic_pyqs?subject=${subjectId}&topic=${topicId}`);
+      pyqData = await r.json();
+    }
 
-  // Chapter Info
-  const info = document.createElement('div');
-  info.className = 'info-card';
-  info.innerHTML = `
-    <h3>📚 Today's Chapters</h3>
-    ${day.subjects.map(s => `
-      <div style="margin:10px 0;">
-        <span class="subj-tag ${s.tag}">${s.name}</span>
-        <ul>${s.chapters.map(c => `<li>${c}</li>`).join('')}</ul>
-      </div>
-    `).join('')}
-  `;
-  app.appendChild(info);
+    if (quizType === 'mcq') {
+      if (includePYQ && pyqData.mcqs) {
+        questions = questions.concat(pyqData.mcqs);
+      }
+      if (includeAI) {
+        const r = await fetch(`${API}/api/generate_topic_mcqs`, {
+          method: 'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({subject: subjectId, topic: topicId})
+        });
+        const aiMcqs = await r.json();
+        if (Array.isArray(aiMcqs)) questions = questions.concat(aiMcqs);
+      }
+      renderMCQs();
+    } else {
+      // Mains
+      if (includePYQ && pyqData.mains) {
+        questions = questions.concat(pyqData.mains);
+      }
+      if (includeAI) {
+        const r = await fetch(`${API}/api/generate_topic_mains`, {
+          method: 'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({subject: subjectId, topic: topicId})
+        });
+        const aiMains = await r.json();
+        if (aiMains && aiMains.q) questions.push(aiMains);
+      }
+      renderMains();
+    }
+  } catch (e) {
+    alert("Error fetching questions: " + e.message);
+  }
+  
+  document.getElementById('loader').style.display = 'none';
+}
 
-  // Questions
-  day.questions.forEach((q, i) => {
-    const qId = `day${dayNum}q${i}`;
+function renderMCQs() {
+  const container = document.getElementById('qContainer');
+  if (questions.length === 0) {
+    container.innerHTML = `<p style="text-align:center; padding: 20px;">No questions found for this topic.</p>`;
+    return;
+  }
+
+  questions.forEach((q, i) => {
+    const qId = `q${i}`;
     const card = document.createElement('div');
     card.className = 'question-card';
     card.id = `card-${qId}`;
-    card.innerHTML = `
-      <span class="tag ${q.type}">${q.type === 'pyq' ? `📜 PYQ — UPSC ${q.year}` : '🧠 Practice MCQ'}</span>
-      <p class="q-num">Question ${i+1} of ${day.questions.length} *</p>
-      <p class="q-text">${q.q}</p>
-      <div class="options" id="opts-${qId}">
-        ${q.opts.map((o, oi) => `
-          <div class="option" onclick="selectOption('${qId}',${oi},this)">
-            <input type="radio" name="${qId}" value="${oi}">
-            <span class="opt-text">${String.fromCharCode(65+oi)}) ${o}</span>
-          </div>
-        `).join('')}
+    
+    let optsHtml = q.opts.map((o, oi) => `
+      <div class="option" onclick="selectOption('${qId}',${oi},this)">
+        <input type="radio" name="${qId}" value="${oi}">
+        <span class="opt-text">${String.fromCharCode(65+oi)}) ${o}</span>
       </div>
+    `).join('');
+
+    card.innerHTML = `
+      <span class="tag ${q.type === 'pyq' ? 'pyq' : 'mcq'}">${q.type === 'pyq' ? `📜 PYQ — ${q.year}` : '🧠 AI Generated MCQ'}</span>
+      <p class="q-num">Question ${i+1} of ${questions.length}</p>
+      <p class="q-text">${q.q}</p>
+      <div class="options" id="opts-${qId}">${optsHtml}</div>
       <div class="explanation" id="exp-${qId}"></div>
     `;
-    app.appendChild(card);
+    container.appendChild(card);
   });
 
-  // Submit Section
-  const submitSec = document.createElement('div');
-  submitSec.className = 'submit-section';
-  submitSec.innerHTML = `
-    <button class="submit-btn" id="submitBtn" onclick="submitQuiz(${dayNum})">Submit</button>
-    <button class="clear-btn" onclick="loadDay(${dayNum})">Clear form</button>
-  `;
-  app.appendChild(submitSec);
+  document.getElementById('submitSec').style.display = 'flex';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = 'Submit Answers';
+}
 
-  // Mains Section
-  if (day.mains) {
-    const mains = document.createElement('div');
-    mains.className = 'mains-card';
-    mains.innerHTML = `
+function renderMains() {
+  const container = document.getElementById('qContainer');
+  if (questions.length === 0) {
+    container.innerHTML = `<p style="text-align:center; padding: 20px;">No mains questions found for this topic.</p>`;
+    return;
+  }
+
+  questions.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'mains-card';
+    
+    let approachHtml = (q.approach || []).map(a => `<li>${a}</li>`).join('');
+    
+    card.innerHTML = `
       <h3>✍️ Mains Answer Writing Practice</h3>
-      <div class="mains-q">${day.mains.q}</div>
+      <span class="tag ${q.type === 'pyq' ? 'pyq' : 'mcq'}" style="background:#e0e0e0; padding:4px 8px; border-radius:4px; font-size:0.8em; margin-bottom:12px; display:inline-block;">${q.type === 'pyq' ? `📜 PYQ — ${q.year}` : '🧠 AI Generated'}</span>
+      <div class="mains-q">${q.q}</div>
       <div class="approach-box">
-        <h4>📋 How to Approach This Question:</h4>
-        <ul>${day.mains.approach.map(a => `<li>${a}</li>`).join('')}</ul>
+        <h4>📋 How to Approach:</h4>
+        <ul>${approachHtml}</ul>
       </div>
       <details>
         <summary>📖 View Model Answer</summary>
-        <div class="model-text">${day.mains.model}</div>
+        <div class="model-text">${q.model || "No model answer provided."}</div>
       </details>
     `;
-    app.appendChild(mains);
-  }
-
-  window.scrollTo(0, 0);
+    container.appendChild(card);
+  });
+  
+  // Set as completed immediately for mains reading
+  const key = `upsc_${subjectId}_${topicId}_mains`;
+  localStorage.setItem(key, 'true');
 }
 
 function selectOption(qId, optIdx, el) {
@@ -263,26 +262,23 @@ function selectOption(qId, optIdx, el) {
   el.querySelector('input').checked = true;
 }
 
-function submitQuiz(dayNum) {
+function submitQuiz() {
   if (submitted) return;
   submitted = true;
-  const day = DAYS[dayNum];
   score = 0; attempted = 0; correct = 0;
 
-  day.questions.forEach((q, i) => {
-    const qId = `day${dayNum}q${i}`;
+  questions.forEach((q, i) => {
+    const qId = `q${i}`;
     const selected = document.querySelector(`input[name="${qId}"]:checked`);
     const card = document.getElementById(`card-${qId}`);
     const expDiv = document.getElementById(`exp-${qId}`);
     const opts = document.querySelectorAll(`#opts-${qId} .option`);
 
-    // Disable all options
     opts.forEach(o => { o.style.pointerEvents = 'none'; });
 
     if (selected) {
       attempted++;
       const val = parseInt(selected.value);
-      // Highlight correct answer
       opts[q.ans].classList.add('correct-answer');
       
       if (val === q.ans) {
@@ -290,29 +286,27 @@ function submitQuiz(dayNum) {
         score += 2;
         card.classList.add('correct');
         expDiv.className = 'explanation correct show';
-        expDiv.innerHTML = `<strong>✅ Correct! (+2 marks)</strong>${q.exp}`;
+        expDiv.innerHTML = `<strong>✅ Correct! (+2 marks)</strong>${q.exp || ''}`;
       } else {
         score -= 0.67;
         card.classList.add('wrong');
         opts[val].classList.add('wrong-answer');
         expDiv.className = 'explanation wrong show';
-        expDiv.innerHTML = `<strong>❌ Wrong! (-0.67 marks) Correct: ${String.fromCharCode(65+q.ans)}</strong>${q.exp}`;
+        expDiv.innerHTML = `<strong>❌ Wrong! (-0.67 marks) Correct: ${String.fromCharCode(65+q.ans)}</strong>${q.exp || ''}`;
       }
     } else {
-      // Not attempted — show correct answer
       opts[q.ans].classList.add('correct-answer');
       expDiv.className = 'explanation show';
       expDiv.style.display = 'block';
       expDiv.style.background = '#fff3e0';
       expDiv.style.border = '1px solid #ffcc80';
       expDiv.style.color = '#e65100';
-      expDiv.innerHTML = `<strong>⚠️ Not attempted (0 marks) Correct: ${String.fromCharCode(65+q.ans)}</strong>${q.exp}`;
+      expDiv.innerHTML = `<strong>⚠️ Not attempted (0 marks) Correct: ${String.fromCharCode(65+q.ans)}</strong>${q.exp || ''}`;
     }
   });
 
-  // Show Score Card
   const pct = attempted > 0 ? Math.round((correct/attempted)*100) : 0;
-  const total = day.questions.length;
+  const total = questions.length;
   const maxMarks = total * 2;
   const scoreCard = document.getElementById('scoreCard');
   scoreCard.className = 'score-card show';
@@ -325,27 +319,26 @@ function submitQuiz(dayNum) {
       <div class="score-item"><div class="val purple">${pct}%</div><div class="lbl">Accuracy</div></div>
     </div>
     <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${pct>=70?'#0d652d':pct>=40?'#f9a825':'#d93025'}"></div></div>
-    <p style="margin-top:12px;color:var(--muted);font-size:0.85em;">${pct >= 70 ? '🔥 Excellent! You are well-prepared!' : pct >= 40 ? '📖 Good effort! Revise the topics you got wrong.' : '⚠️ Needs improvement. Re-read the chapters and try again.'}</p>
   `;
 
-  // Disable submit
   document.getElementById('submitBtn').disabled = true;
   document.getElementById('submitBtn').textContent = 'Submitted ✓';
   scoreCard.scrollIntoView({ behavior: 'smooth' });
 
-  // Save to localStorage
-  const key = `upsc_day${dayNum}_score`;
-  localStorage.setItem(key, JSON.stringify({ score: score.toFixed(2), correct, attempted, total, pct, date: new Date().toISOString() }));
+  // Save completion status to local storage for the dashboard UI
+  const key = `upsc_${subjectId}_${topicId}_mcq`;
+  localStorage.setItem(key, 'true');
 
-  // Send score to backend so Dashboard/Streak updates!
+  // We can post score to backend if we want to track overall metrics.
+  // Using subject and topic instead of day
   fetch(window.location.origin + '/api/score', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       user_id: 'default',
-      day: dayNum,
-      week: Math.ceil(dayNum / 7),
-      phase: 1,
+      day: 1, // Fallback for DB schema
+      subject: subjectId,
+      topic: topicId,
       score: parseFloat(score.toFixed(2)),
       total_marks: maxMarks,
       correct: correct,
@@ -356,10 +349,11 @@ function submitQuiz(dayNum) {
   }).catch(e => console.error("Could not sync score:", e));
 }
 
-// Load from URL param or default to Day 1
-const urlParams = new URLSearchParams(window.location.search);
-const startDay = parseInt(urlParams.get('day')) || 1;
-loadDay(startDay);
+// Initial Fetch
+if (quizType === 'mains') {
+  document.getElementById('chkAI').labels[0].innerHTML = '<input type="checkbox" id="chkAI" checked> Generate AI Mains Q';
+}
+fetchQuestions();
 </script>
 </body>
 </html>
