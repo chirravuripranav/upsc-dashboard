@@ -3,92 +3,141 @@
     "id": "polity",
     "title": "Indian Polity (M. Laxmikanth)",
     "topics": [
-      {
-        "id": "historical_background",
-        "title": "Historical Background"
-      },
-      {
-        "id": "making_of_constitution",
-        "title": "Making of the Constitution"
-      },
-      {
-        "id": "salient_features",
-        "title": "Salient Features of the Constitution"
-      },
-      {
-        "id": "preamble",
-        "title": "Preamble of the Constitution"
-      },
-      {
-        "id": "union_and_territory",
-        "title": "Union and its Territory"
-      },
-      {
-        "id": "citizenship",
-        "title": "Citizenship"
-      },
-      {
-        "id": "fundamental_rights",
-        "title": "Fundamental Rights"
-      },
-      {
-        "id": "dpsp",
-        "title": "Directive Principles of State Policy"
-      },
-      {
-        "id": "fundamental_duties",
-        "title": "Fundamental Duties"
-      },
-      {
-        "id": "amendment",
-        "title": "Amendment of the Constitution"
-      }
+      { "id": "historical_background", "title": "Historical Background" },
+      { "id": "making_of_constitution", "title": "Making of the Constitution" },
+      { "id": "salient_features", "title": "Salient Features of the Constitution" },
+      { "id": "preamble", "title": "Preamble of the Constitution" },
+      { "id": "union_and_territory", "title": "Union and its Territory" },
+      { "id": "citizenship", "title": "Citizenship" },
+      { "id": "fundamental_rights", "title": "Fundamental Rights" },
+      { "id": "dpsp", "title": "Directive Principles of State Policy" },
+      { "id": "fundamental_duties", "title": "Fundamental Duties" },
+      { "id": "amendment", "title": "Amendment of the Constitution" },
+      { "id": "basic_structure", "title": "Basic Structure of the Constitution" },
+      { "id": "parliamentary_system", "title": "Parliamentary System" },
+      { "id": "federal_system", "title": "Federal System" },
+      { "id": "center_state_relations", "title": "Centre-State Relations" },
+      { "id": "emergency_provisions", "title": "Emergency Provisions" },
+      { "id": "president", "title": "President" },
+      { "id": "prime_minister", "title": "Prime Minister & Council of Ministers" },
+      { "id": "parliament", "title": "Parliament" },
+      { "id": "supreme_court", "title": "Supreme Court" },
+      { "id": "state_government", "title": "State Government (Governor, CM, Legislature)" },
+      { "id": "high_courts", "title": "High Courts & Subordinate Courts" },
+      { "id": "local_government", "title": "Panchayati Raj & Municipalities" },
+      { "id": "constitutional_bodies", "title": "Constitutional Bodies" },
+      { "id": "non_constitutional_bodies", "title": "Non-Constitutional Bodies" }
     ]
   },
   {
     "id": "history",
     "title": "Modern History (Spectrum)",
     "topics": [
-      {
-        "id": "advent_europeans",
-        "title": "Advent of Europeans in India"
-      },
-      {
-        "id": "british_expansion",
-        "title": "Expansion and Consolidation of British Power"
-      },
-      {
-        "id": "revolt_1857",
-        "title": "The Revolt of 1857"
-      },
-      {
-        "id": "socio_religious",
-        "title": "Socio-Religious Reform Movements"
-      },
-      {
-        "id": "early_nationalism",
-        "title": "Beginnings of Modern Nationalism"
-      },
-      {
-        "id": "inc_foundation",
-        "title": "Indian National Congress: Foundation and Moderate Phase"
-      },
-      {
-        "id": "extremist_phase",
-        "title": "Era of Militant Nationalism (1905-1909)"
-      },
-      {
-        "id": "gandhian_era_early",
-        "title": "Emergence of Gandhi"
-      },
-      {
-        "id": "non_cooperation",
-        "title": "Non-Cooperation Movement and Khilafat Aandolan"
-      },
-      {
-        "id": "civil_disobedience",
-        "title": "Civil Disobedience Movement and Round Table Conferences"
-      }
+      { "id": "advent_europeans", "title": "Advent of Europeans in India" },
+      { "id": "british_expansion", "title": "Expansion and Consolidation of British Power" },
+      { "id": "economic_impact", "title": "Economic Impact of British Rule" },
+      { "id": "revolt_1857", "title": "The Revolt of 1857" },
+      { "id": "socio_religious", "title": "Socio-Religious Reform Movements" },
+      { "id": "early_nationalism", "title": "Beginnings of Modern Nationalism" },
+      { "id": "inc_foundation", "title": "Indian National Congress: Foundation and Moderate Phase" },
+      { "id": "extremist_phase", "title": "Era of Militant Nationalism (1905-1909)" },
+      { "id": "gandhian_era_early", "title": "Emergence of Gandhi & Early Satyagrahas" },
+      { "id": "non_cooperation", "title": "Non-Cooperation Movement and Khilafat Aandolan" },
+      { "id": "civil_disobedience", "title": "Civil Disobedience Movement and Round Table Conferences" },
+      { "id": "quit_india", "title": "Quit India Movement, INA and Post-War Crises" },
+      { "id": "independence", "title": "Independence with Partition" }
+    ]
+  },
+  {
+    "id": "geography",
+    "title": "Geography (NCERT + GC Leong)",
+    "topics": [
+      { "id": "universe_solar_system", "title": "Universe and the Solar System" },
+      { "id": "geomorphology", "title": "Geomorphology (Interior of Earth, Earthquakes, Volcanoes)" },
+      { "id": "landforms", "title": "Landforms and their Evolution" },
+      { "id": "climatology", "title": "Climatology (Atmosphere, Wind, Cyclones)" },
+      { "id": "oceanography", "title": "Oceanography (Ocean Bottom, Currents, Tides)" },
+      { "id": "india_physical", "title": "India - Physical Geography (Location, Relief, Drainage)" },
+      { "id": "india_climate", "title": "India - Climate, Vegetation, and Soil" },
+      { "id": "agriculture", "title": "Agriculture and Allied Activities" },
+      { "id": "resources_industries", "title": "Mineral Resources and Industries" },
+      { "id": "human_geography", "title": "Human Geography (Population, Migration, Settlements)" }
+    ]
+  },
+  {
+    "id": "economy",
+    "title": "Indian Economy",
+    "topics": [
+      { "id": "national_income", "title": "National Income Accounting" },
+      { "id": "planning_niti", "title": "Planning in India & NITI Aayog" },
+      { "id": "inflation", "title": "Inflation and Business Cycles" },
+      { "id": "money_banking", "title": "Money, Banking and RBI" },
+      { "id": "financial_markets", "title": "Financial Markets (Money Market, Capital Market)" },
+      { "id": "fiscal_policy", "title": "Public Finance and Fiscal Policy" },
+      { "id": "taxation", "title": "Taxation System in India (GST, Direct/Indirect Taxes)" },
+      { "id": "external_sector", "title": "External Sector (BoP, Exchange Rate, FOREX)" },
+      { "id": "international_orgs", "title": "International Organizations (IMF, WB, WTO)" },
+      { "id": "agriculture_economy", "title": "Agriculture Sector (Subsidies, MSP, PDS)" },
+      { "id": "industry_infrastructure", "title": "Industry and Infrastructure" },
+      { "id": "social_sector", "title": "Poverty, Unemployment, and Social Sector Initiatives" }
+    ]
+  },
+  {
+    "id": "environment",
+    "title": "Environment & Ecology (Shankar IAS)",
+    "topics": [
+      { "id": "ecology_ecosystem", "title": "Ecology and Ecosystem" },
+      { "id": "biodiversity", "title": "Biodiversity and its Conservation" },
+      { "id": "climate_change", "title": "Climate Change and Mitigation" },
+      { "id": "environmental_pollution", "title": "Environmental Pollution" },
+      { "id": "environmental_acts", "title": "Environmental Acts and Policies (India)" },
+      { "id": "international_conventions", "title": "International Environmental Conventions" },
+      { "id": "protected_areas", "title": "Protected Area Network (National Parks, Wildlife Sanctuaries)" }
+    ]
+  },
+  {
+    "id": "ancient_medieval",
+    "title": "Ancient & Medieval History",
+    "topics": [
+      { "id": "prehistoric", "title": "Prehistoric Period" },
+      { "id": "indus_valley", "title": "Indus Valley Civilization" },
+      { "id": "vedic_age", "title": "Vedic Age" },
+      { "id": "jainism_buddhism", "title": "Jainism and Buddhism" },
+      { "id": "mauryan_empire", "title": "Mauryan Empire" },
+      { "id": "post_mauryan", "title": "Post-Mauryan Period" },
+      { "id": "gupta_empire", "title": "Gupta Empire" },
+      { "id": "harsha_regional", "title": "Harshavardhana and Regional States" },
+      { "id": "delhi_sultanate", "title": "Delhi Sultanate" },
+      { "id": "mughal_empire", "title": "Mughal Empire" },
+      { "id": "marathas_regional", "title": "Marathas and Regional Powers" },
+      { "id": "bhakti_sufi", "title": "Bhakti and Sufi Movements" }
+    ]
+  },
+  {
+    "id": "art_culture",
+    "title": "Art & Culture (Nitin Singhania)",
+    "topics": [
+      { "id": "architecture", "title": "Indian Architecture and Sculpture" },
+      { "id": "paintings", "title": "Indian Paintings" },
+      { "id": "music_dance", "title": "Indian Music and Dance Forms" },
+      { "id": "theatre_puppetry", "title": "Indian Theatre and Puppetry" },
+      { "id": "literature", "title": "Indian Language and Literature" },
+      { "id": "religion_philosophy", "title": "Religion and Philosophy in India" },
+      { "id": "fairs_festivals", "title": "Fairs and Festivals of India" }
+    ]
+  },
+  {
+    "id": "science_tech",
+    "title": "Science & Technology",
+    "topics": [
+      { "id": "space_tech", "title": "Space Technology" },
+      { "id": "biotechnology", "title": "Biotechnology" },
+      { "id": "it_computers", "title": "Information Technology and Computers" },
+      { "id": "nanotechnology", "title": "Nanotechnology" },
+      { "id": "robotics_ai", "title": "Robotics and Artificial Intelligence" },
+      { "id": "defense_tech", "title": "Defense Technology" },
+      { "id": "health_diseases", "title": "Health and Diseases" },
+      { "id": "nuclear_tech", "title": "Nuclear Technology" }
     ]
   }
 ]
