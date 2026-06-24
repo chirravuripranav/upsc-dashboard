@@ -354,15 +354,17 @@ async function loadSyllabus() {
 
 function renderLists() {
   // Render ALL 126 days now (inside scroll container)
-  const mcqHtml = syllabusData.map(d => `
+  const mcqHtml = syllabusData.map(d => {
+    const isDone = localStorage.getItem('upsc_day' + d.day + '_score');
+    return `
     <div class="day-item" onclick="window.open('quiz.html?day=${d.day}&type=mcq', '_blank')">
       <div class="day-info">
         <h3 style="color:var(--accent-blue)">Day ${d.day} <span style="font-size:0.75em; color:var(--text-muted); font-weight:500;">(${d.mcqs.length} MCQs)</span></h3>
         <p>${d.title}</p>
       </div>
-      <button class="btn" style="background:var(--accent-blue);">Start MCQs</button>
+      <button class="btn" style="background:${isDone ? 'var(--accent-green)' : 'var(--accent-blue)'};">${isDone ? 'Completed ✓' : 'Start MCQs'}</button>
     </div>
-  `).join('');
+  `}).join('');
   document.getElementById('mcqList').innerHTML = mcqHtml;
 
   const mainsHtml = syllabusData.map(d => `

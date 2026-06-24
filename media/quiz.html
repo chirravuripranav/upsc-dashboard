@@ -62,6 +62,10 @@ body { font-family:'Roboto','Google Sans',sans-serif; background:var(--bg); colo
 .explanation.show { display:block; }
 .explanation.correct { background:var(--green-bg); border:1px solid #a8dab5; color:var(--green); }
 .explanation.wrong { background:var(--red-bg); border:1px solid #f5c6cb; color:var(--red); }
+.option.correct-answer { position: relative; border-color:var(--green); background:var(--green-bg); }
+.option.correct-answer::after { content: '✅'; position: absolute; right: 15px; top: 12px; font-size: 1.2em; }
+.option.wrong-answer { position: relative; border-color:var(--red); background:var(--red-bg); }
+.option.wrong-answer::after { content: '❌'; position: absolute; right: 15px; top: 12px; font-size: 1.2em; }
 .explanation strong { display:block; margin-bottom:4px; }
 
 /* Mains Card */
@@ -332,6 +336,24 @@ function submitQuiz(dayNum) {
   // Save to localStorage
   const key = `upsc_day${dayNum}_score`;
   localStorage.setItem(key, JSON.stringify({ score: score.toFixed(2), correct, attempted, total, pct, date: new Date().toISOString() }));
+
+  // Send score to backend so Dashboard/Streak updates!
+  fetch(window.location.origin + '/api/score', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      user_id: 'default',
+      day: dayNum,
+      week: Math.ceil(dayNum / 7),
+      phase: 1,
+      score: parseFloat(score.toFixed(2)),
+      total_marks: maxMarks,
+      correct: correct,
+      attempted: attempted,
+      total_questions: total,
+      accuracy: pct
+    })
+  }).catch(e => console.error("Could not sync score:", e));
 }
 
 // Load from URL param or default to Day 1
