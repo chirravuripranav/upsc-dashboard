@@ -211,6 +211,10 @@ textarea:focus { outline: none; border-color: var(--accent-purple); box-shadow: 
     <div class="panel active" id="p-dashboard">
       <div class="stats-grid">
         <div class="glass-card" style="padding: 16px;">
+          <div class="stat-label">Days Remaining</div>
+          <div class="stat-value" id="s-days" style="color:var(--accent-blue)">126</div>
+        </div>
+        <div class="glass-card" style="padding: 16px;">
           <div class="stat-label">MCQs Mastered</div>
           <div class="stat-value" id="s-mcq" style="color:var(--accent-purple)">0</div>
         </div>
@@ -334,6 +338,12 @@ function switchTab(tabId) {
 const API = window.location.origin;
 
 async function loadStats() {
+  const startDate = new Date('2026-06-22T00:00:00');
+  const today = new Date();
+  const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+  const remaining = Math.max(0, 126 - diffDays);
+  document.getElementById('s-days').textContent = remaining;
+
   try {
     const res = await fetch(`${API}/api/stats`);
     const data = await res.json();
