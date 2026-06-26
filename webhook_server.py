@@ -266,7 +266,7 @@ def generate_topic_mcqs():
     data = request.json
     subject = data.get('subject')
     topic = data.get('topic')
-    groq_api_key = env.get('GROQ_API_KEY')
+    groq_api_key = os.environ.get('GROQ_API_KEY') or env.get('GROQ_API_KEY')
     if not groq_api_key:
         return jsonify({'error': 'GROQ_API_KEY missing'}), 500
     try:
@@ -306,7 +306,7 @@ def generate_topic_mains():
     data = request.json
     subject = data.get('subject')
     topic = data.get('topic')
-    groq_api_key = env.get('GROQ_API_KEY')
+    groq_api_key = os.environ.get('GROQ_API_KEY') or env.get('GROQ_API_KEY')
     if not groq_api_key:
         return jsonify({'error': 'GROQ_API_KEY missing'}), 500
     try:
