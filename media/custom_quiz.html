@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat with AI - Custom Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --bg-color: #0f172a; --surface-color: #1e293b; --surface-hover: #334155;
+    --primary: #3b82f6; --primary-hover: #2563eb; --text-main: #f8fafc;
+    --text-muted: #94a3b8; --border-color: #334155; --success: #10b981;
+    --danger: #ef4444; --accent: #8b5cf6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+  body { background: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+  .header { padding: 20px; text-align: center; background: var(--surface-color); border-bottom: 1px solid var(--border-color); }
+  .header h1 { font-size: 24px; color: var(--accent); }
+  .header p { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
+  .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+  
+  .search-box {
+    display: flex; gap: 10px; background: var(--surface-color); padding: 20px;
+    border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 30px;
+  }
+  .search-box input {
+    flex: 1; padding: 12px 20px; border-radius: 8px; border: 1px solid var(--border-color);
+    background: var(--bg-color); color: var(--text-main); font-size: 16px; outline: none;
+  }
+  .search-box input:focus { border-color: var(--accent); }
+  .search-box button {
+    padding: 12px 24px; border: none; border-radius: 8px; background: var(--accent);
+    color: white; font-weight: 600; cursor: pointer; transition: 0.2s;
+  }
+  .search-box button:hover { background: #7c3aed; }
+
+  .question-card {
+    background: var(--surface-color); border-radius: 12px; padding: 25px;
+    margin-bottom: 20px; border: 1px solid var(--border-color);
+  }
+  .question-text { font-size: 16px; font-weight: 500; margin-bottom: 20px; }
+  .options-grid { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);
+    cursor: pointer; transition: 0.2s; background: var(--bg-color);
+  }
+  .option:hover { border-color: var(--primary); }
+  .option.selected { border-color: var(--primary); background: rgba(59, 130, 246, 0.1); }
+  .option.correct { border-color: var(--success); background: rgba(16, 185, 129, 0.1); }
+  .option.wrong { border-color: var(--danger); background: rgba(239, 68, 68, 0.1); }
+  
+  .explanation {
+    margin-top: 20px; padding: 15px; background: rgba(139, 92, 246, 0.1);
+    border-left: 4px solid var(--accent); border-radius: 4px; display: none;
+  }
+  .explanation.show { display: block; }
+  
+  .submit-btn {
+    display: none; width: 100%; padding: 16px; background: var(--primary);
+    color: white; border: none; border-radius: 12px; font-size: 18px;
+    font-weight: 600; cursor: pointer; margin-top: 20px; margin-bottom: 50px;
+  }
+  
+  .loader { display: none; text-align: center; padding: 50px; color: var(--text-muted); }
+  .loader i { font-size: 40px; color: var(--accent); animation: spin 1s linear infinite; margin-bottom: 15px;}
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+
+  .score-card { display: none; text-align: center; padding: 40px; background: var(--surface-color); border-radius: 12px; margin-bottom: 30px;}
+  .score-card h2 { color: var(--success); font-size: 32px; margin-bottom: 10px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><i class="fa-solid fa-robot"></i> Chat with AI</h1>
+  <p>Generate highly difficult UPSC quizzes on any specific keyword or sub-topic</p>
+</div>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="keyword" placeholder="e.g. Fundamental Rights Exceptions, Vijayanagara Empire..." autocomplete="off">
+    <button onclick="generateQuiz()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Quiz</button>
+  </div>
+
+  <div id="loader" class="loader">
+    <i class="fa-solid fa-circle-notch"></i>
+    <p>AI is acting as a UPSC Paper Setter...<br>Generating highly difficult MCQs...</p>
+  </div>
+
+  <div id="scoreCard" class="score-card">
+    <h2 id="finalScore">0/0</h2>
+    <p>Quiz Completed!</p>
+  </div>
+
+  <div id="qContainer"></div>
+
+  <button class="submit-btn" id="submitBtn" onclick="submitQuiz()">Submit Quiz</button>
+</div>
+
+<script>
+let questions = [];
+let userAnswers = {};
+const API = window.location.origin;
+
+async function generateQuiz() {
+  const keyword = document.getElementById('keyword').value.trim();
+  if (!keyword) return alert("Please enter a keyword!");
+  
+  document.getElementById('qContainer').innerHTML = '';
+  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('scoreCard').style.display = 'none';
+  document.getElementById('loader').style.display = 'block';
+  questions = [];
+  userAnswers = {};
+
+  try {
+    const r = await fetch(`${API}/api/generate_custom_quiz`, {
+      method: 'POST', 
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({keyword: keyword})
+    });
+    
+    if (!r.ok) {
+      const err = await r.json();
+      throw new Error(err.error || 'Server error');
+    }
+    
+    const data = await r.json();
+    if (Array.isArray(data) && data.length > 0) {
+      questions = data;
+      renderMCQs();
+    } else {
+      document.getElementById('qContainer').innerHTML = `<p style="text-align:center;">No questions could be generated. Try another keyword.</p>`;
+    }
+  } catch (e) {
+    alert("Error fetching custom quiz: " + e.message);
+  }
+  
+  document.getElementById('loader').style.display = 'none';
+}
+
+function renderMCQs() {
+  const container = document.getElementById('qContainer');
+  container.innerHTML = '';
+  
+  questions.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `card-q${i}`;
+    
+    let html = `
+      <div class="question-text">
+        <span style="color:var(--text-muted); font-size:12px;">Q${i+1} | ${q.year}</span><br><br>
+        ${q.q.replace(/\n/g, '<br>')}
+      </div>
+      <div class="options-grid">
+    `;
+    
+    q.opts.forEach((opt, oIdx) => {
+      html += `<div class="option" id="opt-q${i}-${oIdx}" onclick="selectOption(${i}, ${oIdx})">${String.fromCharCode(65+oIdx)}. ${opt}</div>`;
+    });
+    
+    html += `</div>
+      <div class="explanation" id="exp-q${i}">
+        <strong>Explanation:</strong><br>${q.exp}
+      </div>
+    `;
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+  
+  document.getElementById('submitBtn').style.display = 'block';
+}
+
+function selectOption(qIdx, oIdx) {
+  if (document.getElementById('submitBtn').style.display === 'none') return; // already submitted
+  userAnswers[qIdx] = oIdx;
+  
+  for (let i=0; i<4; i++) {
+    const el = document.getElementById(`opt-q${qIdx}-${i}`);
+    if (el) el.classList.remove('selected');
+  }
+  document.getElementById(`opt-q${qIdx}-${oIdx}`).classList.add('selected');
+}
+
+function submitQuiz() {
+  if (Object.keys(userAnswers).length < questions.length) {
+    if(!confirm("You haven't answered all questions. Submit anyway?")) return;
+  }
+  
+  let correctCount = 0;
+  
+  questions.forEach((q, i) => {
+    const userAns = userAnswers[i];
+    const correctAns = q.ans;
+    
+    // Highlight answers
+    for (let o=0; o<4; o++) {
+      const el = document.getElementById(`opt-q${i}-${o}`);
+      if (!el) continue;
+      
+      if (o === correctAns) {
+        el.classList.add('correct');
+      } else if (o === userAns && userAns !== correctAns) {
+        el.classList.add('wrong');
+      }
+    }
+    
+    if (userAns === correctAns) correctCount++;
+    
+    document.getElementById(`exp-q${i}`).classList.add('show');
+  });
+  
+  document.getElementById('submitBtn').style.display = 'none';
+  
+  // Show score card
+  const scoreCard = document.getElementById('scoreCard');
+  scoreCard.style.display = 'block';
+  document.getElementById('finalScore').innerText = `${correctCount} / ${questions.length}`;
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

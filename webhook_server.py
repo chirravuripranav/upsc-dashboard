@@ -332,6 +332,50 @@ Output MUST be pure JSON ONLY:
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/generate_custom_quiz', methods=['POST'])
+def generate_custom_quiz():
+    data = request.json
+    keyword = data.get('keyword')
+    if not keyword:
+        return jsonify({'error': 'Keyword is required'}), 400
+    
+    groq_api_key = os.environ.get('GROQ_API_KEY') or env.get('GROQ_API_KEY')
+    if not groq_api_key:
+        return jsonify({'error': 'GROQ_API_KEY missing'}), 500
+        
+    try:
+        from groq import Groq
+        client = Groq(api_key=groq_api_key)
+        prompt = f"""You are an expert UPSC Prelims paper setter. The user wants a custom quiz on the specific keyword/topic: '{keyword}'.
+Generate exactly 5 highly difficult UPSC-level MCQs strictly focused on this exact keyword.
+Use modern UPSC formats like:
+- Statement-based (Which of the statements given above is/are correct?)
+- Assertion-Reasoning
+- Matching pairs (How many pairs are correctly matched?)
+
+You MUST return the output in pure JSON format ONLY (no markdown blocks, no introduction).
+The JSON MUST perfectly match this schema:
+[
+  {{ "type": "mcq", "year": "AI Custom Quiz", "q": "Question text...", "opts": ["Option 1", "Option 2", "Option 3", "Option 4"], "ans": 0, "exp": "Detailed explanation." }}
+]
+"""
+        completion = client.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7,
+            max_tokens=2048,
+            top_p=1
+        )
+        response_text = completion.choices[0].message.content
+        import json
+        start_idx = response_text.find('[')
+        end_idx = response_text.rfind(']') + 1
+        mcqs = json.loads(response_text[start_idx:end_idx])
+        return jsonify(mcqs)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/topic_pyqs', methods=['GET'])
 def get_topic_pyqs():
     subject = request.args.get('subject')
