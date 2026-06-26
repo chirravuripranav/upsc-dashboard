@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPSC Video Lectures & Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Marked JS for parsing markdown -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root {
+    --bg-color: #0f172a; --surface-color: #1e293b; --surface-hover: #334155;
+    --primary: #3b82f6; --accent: #7c3aed; --text-main: #f8fafc;
+    --text-muted: #94a3b8; --border-color: #334155;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+  body { background: var(--bg-color); color: var(--text-main); line-height: 1.6; display: flex; flex-direction: column; height: 100vh;}
+  .header { padding: 20px 40px; background: var(--surface-color); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between;}
+  .header h1 { font-family: 'Outfit'; font-size: 24px; background: linear-gradient(135deg, var(--accent), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+  
+  .layout { display: flex; flex: 1; overflow: hidden; }
+  
+  /* Sidebar for Playlist */
+  .playlist-sidebar { width: 350px; background: var(--surface-color); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+  .playlist-header { padding: 20px; font-family: 'Outfit'; border-bottom: 1px solid var(--border-color); }
+  .playlist-items { flex: 1; overflow-y: auto; padding: 10px; }
+  .video-item { padding: 15px; border-radius: 8px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; margin-bottom: 5px; }
+  .video-item:hover { background: var(--surface-hover); }
+  .video-item.active { background: rgba(124, 58, 237, 0.1); border-color: var(--accent); }
+  .video-item h4 { font-size: 14px; margin-bottom: 5px; }
+  .video-item p { font-size: 12px; color: var(--text-muted); }
+
+  /* Main Content: Video + Notes */
+  .main-area { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+  .video-container { width: 100%; aspect-ratio: 16/9; background: #000; border-bottom: 1px solid var(--border-color); }
+  .video-container iframe { width: 100%; height: 100%; border: none; }
+  
+  .notes-container { padding: 40px; max-width: 900px; margin: 0 auto; width: 100%; }
+  .notes-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; }
+  .notes-header h2 { font-family: 'Outfit'; font-size: 28px; }
+  .badge { background: var(--accent); padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  
+  /* Markdown Styles */
+  .markdown-body h2 { color: var(--accent); margin-top: 30px; margin-bottom: 15px; font-family: 'Outfit'; }
+  .markdown-body h3 { color: var(--primary); margin-top: 25px; margin-bottom: 10px; }
+  .markdown-body p { margin-bottom: 15px; color: #cbd5e1; }
+  .markdown-body ul, .markdown-body ol { margin-bottom: 15px; padding-left: 20px; color: #cbd5e1; }
+  .markdown-body li { margin-bottom: 8px; }
+  .markdown-body strong { color: var(--text-main); }
+  .markdown-body blockquote { border-left: 4px solid var(--primary); padding-left: 15px; color: var(--text-muted); font-style: italic; margin-bottom: 15px; background: rgba(59, 130, 246, 0.05); padding: 15px; border-radius: 0 8px 8px 0; }
+  
+  .empty-state { text-align: center; padding: 50px; color: var(--text-muted); }
+  .empty-state i { font-size: 40px; margin-bottom: 15px; color: var(--border-color); }
+  
+  @media (max-width: 768px) {
+    .layout { flex-direction: column; }
+    .playlist-sidebar { width: 100%; height: 30vh; }
+    .main-area { height: 70vh; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1><i class="fa-solid fa-graduation-cap"></i> UPSC Lectures & AI Notes</h1>
+  <a href="index.html" style="color:var(--text-muted); text-decoration:none;"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+</div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <div class="playlist-sidebar">
+    <div class="playlist-header">
+      <h3>📚 Syllabus Modules</h3>
+      <select id="moduleSelect" style="width:100%; margin-top:10px; padding:10px; background:var(--bg-color); color:var(--text-main); border:1px solid var(--border-color); border-radius:6px; outline:none;" onchange="loadModule(this.value)">
+        <option value="psir">PSIR Optional Playlist</option>
+        <option value="economy">Economy Marathon (Udaan 2026)</option>
+      </select>
+    </div>
+    <div class="playlist-items" id="playlistItems">
+      <!-- Generated via JS -->
+    </div>
+  </div>
+
+  <!-- Main Area -->
+  <div class="main-area">
+    <div class="video-container" id="videoContainer">
+      <div class="empty-state" style="padding-top:10%;"><i class="fa-brands fa-youtube"></i><br>Select a video to start</div>
+    </div>
+    
+    <div class="notes-container">
+      <div class="notes-header">
+        <h2 id="notesTitle">Textbook Notes</h2>
+        <span class="badge"><i class="fa-solid fa-robot"></i> AI Generated</span>
+      </div>
+      <div id="notesContent" class="markdown-body">
+        <div class="empty-state"><i class="fa-solid fa-book-open"></i><br>Standard-book level notes will appear here once a video is selected.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Hardcoded data based on earlier yt-dlp checks
+const modules = {
+  psir: {
+    title: "PSIR Optional Playlist",
+    videos: [
+      { id: 'yjtJ7J_XYZI', title: "PSIR Strategy & Syllabus Decoding", file: "psir_1.md" },
+      { id: 'Q31gA6dZ19o', title: "Western Political Thought - Plato", file: "psir_2.md" },
+      { id: 'L8R8pA8lUu4', title: "Western Political Thought - Aristotle", file: "psir_3.md" },
+      { id: 'jQ8xH9wz9aI', title: "Western Political Thought - Machiavelli", file: "psir_4.md" }
+    ] // Snippet for UI demonstration
+  },
+  economy: {
+    title: "Economy Marathon (12 Hours)",
+    videos: [
+      { id: 'I5I5ri4cS6E', title: "Part 1: National Income & Inflation (0:00 - 3:00)", file: "econ_1.md" },
+      { id: 'I5I5ri4cS6E', title: "Part 2: Banking & RBI (3:00 - 6:00)", file: "econ_2.md" },
+      { id: 'I5I5ri4cS6E', title: "Part 3: Fiscal Policy & Budget (6:00 - 9:00)", file: "econ_3.md" },
+      { id: 'I5I5ri4cS6E', title: "Part 4: External Sector & BoP (9:00 - 12:00)", file: "econ_4.md" }
+    ]
+  }
+};
+
+let currentModule = 'psir';
+
+function loadModule(mod) {
+  currentModule = mod;
+  const list = document.getElementById('playlistItems');
+  list.innerHTML = '';
+  
+  modules[mod].videos.forEach((vid, i) => {
+    const item = document.createElement('div');
+    item.className = 'video-item';
+    item.innerHTML = `<h4>${vid.title}</h4><p><i class="fa-brands fa-youtube"></i> Video ${i+1}</p>`;
+    item.onclick = () => selectVideo(vid, item);
+    list.appendChild(item);
+  });
+}
+
+async function selectVideo(vid, itemEl) {
+  // Update active state
+  document.querySelectorAll('.video-item').forEach(el => el.classList.remove('active'));
+  itemEl.classList.add('active');
+  
+  // Load Video
+  document.getElementById('videoContainer').innerHTML = `<iframe src="https://www.youtube.com/embed/${vid.id}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  
+  // Load Notes
+  document.getElementById('notesTitle').innerText = vid.title + " - Notes";
+  document.getElementById('notesContent').innerHTML = `<div class="loader" style="text-align:center; padding:30px;"><i class="fa-solid fa-circle-notch fa-spin fa-2x" style="color:var(--accent)"></i><br><br>Fetching Standard Book Notes...</div>`;
+  
+  try {
+    const r = await fetch(`/media/notes/${vid.file}`);
+    if (r.ok) {
+      const text = await r.text();
+      document.getElementById('notesContent').innerHTML = marked.parse(text);
+    } else {
+      document.getElementById('notesContent').innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-hourglass-half"></i><br>
+          Notes are currently being generated by the background AI processor.<br>Please check back later!
+        </div>`;
+    }
+  } catch (e) {
+    document.getElementById('notesContent').innerHTML = `<p style="color:red">Error loading notes.</p>`;
+  }
+}
+
+// Initialize
+loadModule('psir');
+</script>
+</body>
+</html>
